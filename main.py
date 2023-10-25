@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
+from middlewares.error import ErrorHandler
 
 from routers.sockets import socketio_app
 from database.db import Base, engine
@@ -14,22 +15,16 @@ app = FastAPI()
 app.title = "Home Heal API"
 app.version = "1.0"
 
+#Adicion de middlewares
+app.add_middleware(ErrorHandler)
+origins = ["http://localhost:4200"]
+app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+
+
 # Adición de routers
 app.include_router(account.router, tags=["Account"])
 app.include_router(user.router, tags=["User"])
 app.include_router(rol.router, tags=["Rol"])
-
-# Configura las políticas CORS
-origins = ["http://localhost:4200"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 @app.get("/")
 async def root():

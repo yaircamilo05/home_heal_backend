@@ -1,5 +1,5 @@
 from jwt import encode, decode
-from schemas.login import credentials_login
+from jwt import DecodeError, ExpiredSignatureError
 from schemas.user import User
 
 def create_token(user: User) -> str:
@@ -7,5 +7,10 @@ def create_token(user: User) -> str:
     return token
 
 def validate_token(token: str) -> dict:
-    data: dict = decode(token, key="iBObRG5saVjUOKj", algorithms=['HS256'])
-    return data
+    try:
+        data = decode(token, "iBObRG5saVjUOKj", algorithms=['HS256'])
+        return data
+    except DecodeError:
+        return None
+    except ExpiredSignatureError:
+        return None

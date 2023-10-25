@@ -17,10 +17,10 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     return User(**new_user.__dict__)
 
 
-@router.get("/all_users")
+@router.get("/get_all_users")
 def get_all_users(db: Session = Depends(get_db)):
     users = all_users(db)
     if not users:
-        return JSONResponse(status_code=404, content={"message": "No hay usuarios"})
+        return JSONResponse(status_code=404, content={"data": users, "message": "No hay usuarios"})
     return users
 

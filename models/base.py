@@ -22,7 +22,7 @@ class Rol(Base):
     name = Column(String(100))
     description = Column(String(255))
 
-    users = relationship('User', back_populates='roles')
+    users = relationship('User', back_populates='role')
     menus = relationship('MenusRol', back_populates='rol')
 
 

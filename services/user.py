@@ -1,5 +1,6 @@
 from models.base import User
 from schemas.user import UserCreate
+from schemas.user import User as UserGet
 from models.base import User
 from utils import auth
 
@@ -22,5 +23,9 @@ def exist_user(email: str, db):
     return usr
 
 
-def all_users(db):
-    return db.query(User).all()
+def all_users(db) -> list[UserGet]:
+    result = []
+    users = db.query(User).all();
+    for user in users:
+        result.append(UserGet(**user.__dict__))
+    return result
