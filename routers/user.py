@@ -9,7 +9,7 @@ from services.user import create_user, exist_user, all_users
 router = APIRouter()
 
 
-@router.post("/create_user", tags=["users"])
+@router.post("/create_user")
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     new_user = create_user(user,db)
     if not new_user:
@@ -17,7 +17,7 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     return User(**new_user.__dict__)
 
 
-@router.get("/all_users", tags=["users"])
+@router.get("/all_users")
 def get_all_users(db: Session = Depends(get_db)):
     users = all_users(db)
     if not users:

@@ -9,4 +9,9 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 # from services.rol import post_rol, exist_rol, get_roles, get_role, put_rol, delete_rol
 
+<<<<<<< HEAD
 router = APIRouter()
+=======
+router = APIRouter()
+
+>>>>>>> Future/Diagnosis

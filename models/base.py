@@ -13,8 +13,10 @@ class User(Base):
     password = Column(String(100))
     rol_id = Column(Integer, ForeignKey('roles.id'))
 
-    roles = relationship('Rol', back_populates='users')
-    diagnoses = relationship('Diagnosis', back_populates='user')
+    role = relationship('Rol', back_populates='users')
+    # diagnoses = relationship(
+    #     'Diagnosis', secondary='diagnoses_users', back_populates='users'
+    # )
 
 
 class Rol(Base):
@@ -37,4 +39,16 @@ class Rol(Base):
 #     date = Date()
 
 #     user_id = Column(Integer, ForeignKey('users.id'))
-#     user = relationship('User', back_populates='diagnoses')
+#     users = relationship(
+#         'User', secondary='diagnoses_users',
+#         back_populates='diagnoses'
+#     )
+
+
+# class DiagnosesUser(Base):
+
+#     __tablename__ = 'diagnoses_users'
+
+#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+#     diagnosis_id = Column(Integer, ForeignKey('diagnoses.id'))
+#     user_id = Column(Integer, ForeignKey('users.id'))
