@@ -1,16 +1,19 @@
 from schemas.user import UserCreate
 from models.user import User
+from utils.auth import encript_password
 
 def create_user(new_user: UserCreate, db):
     exist = exist_user(new_user.email, db)
     if exist:
         return None
-    usr = User(**new_user.model_dump())
+    user = User(**new_user.model_dump())
+    # Encriptation of the password
+    user.password = encript_password(user.password)
     ## Acá va la logica de consulta en la base de datos
-    db.add(usr)
+    db.add(user)
     db.commit()
-    db.refresh(usr)
-    return usr
+    db.refresh(user)
+    return user
 
 def exist_user(email: str, db):
     usr = db.query(User).filter(User.email == email).first()
