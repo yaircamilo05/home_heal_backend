@@ -1,8 +1,6 @@
-from crypt import crypt
-from hashlib import scrypt
+import bcrypt
 
-
-class Auth:
-
-    def encript_password(self, password) -> str:
-        return crypt.hashpw(password.encode('utf-8'), scrypt.gensalt())
+def encript_password(password) -> str:
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')

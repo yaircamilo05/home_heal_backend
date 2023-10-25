@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
 
-
 class User(Base):
     __tablename__ = 'users'
 
@@ -14,10 +13,6 @@ class User(Base):
     rol_id = Column(Integer, ForeignKey('roles.id'))
 
     role = relationship('Rol', back_populates='users')
-    # diagnoses = relationship(
-    #     'Diagnosis', secondary='diagnoses_users', back_populates='users'
-    # )
-
 
 class Rol(Base):
 
@@ -30,25 +25,3 @@ class Rol(Base):
     users = relationship('User', back_populates='roles')
 
 
-# class Diagnosis(Base):
-
-#     __tablename__ = 'diagnoses'
-
-#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     description = Column(String(255))
-#     date = Date()
-
-#     user_id = Column(Integer, ForeignKey('users.id'))
-#     users = relationship(
-#         'User', secondary='diagnoses_users',
-#         back_populates='diagnoses'
-#     )
-
-
-# class DiagnosesUser(Base):
-
-#     __tablename__ = 'diagnoses_users'
-
-#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     diagnosis_id = Column(Integer, ForeignKey('diagnoses.id'))
-#     user_id = Column(Integer, ForeignKey('users.id'))

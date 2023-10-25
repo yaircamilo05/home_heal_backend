@@ -1,7 +1,7 @@
 from models.base import User
 from schemas.user import UserCreate
 from models.base import User
-from utils.auth import encript_password
+from utils import auth
 
 def create_user(new_user: UserCreate, db):
     exist = exist_user(new_user.email, db)
@@ -9,7 +9,7 @@ def create_user(new_user: UserCreate, db):
         return None
     user = User(**new_user.model_dump())
     # Encriptation of the password
-    user.password = encript_password(user.password)
+    user.password = auth.encript_password(user.password)
     ## Acá va la logica de consulta en la base de datos
     db.add(user)
     db.commit()

@@ -5,6 +5,7 @@ class User(BaseModel):
     lastname: str
     email: str
     rol_id: int
+    #menus: list[Menus]
 
 class UserCreate(User):
     password: str
