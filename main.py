@@ -4,7 +4,7 @@ from database.db import Base, engine
 
 from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user, rol, diagnosis
+from routers import user, rol
 
 import uvicorn
 
@@ -15,7 +15,6 @@ app = FastAPI()
 # Adición de routers
 app.include_router(user.router, tags=["User"])
 app.include_router(rol.router, tags=["Rol"])
-app.include_router(diagnosis.router, tags=["Diagnosis"])
 
 # Configura las políticas CORS
 origins = ["http://localhost:4200"]
@@ -28,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to Home Heal server!"}
@@ -35,6 +35,6 @@ async def root():
 app.mount("/", socketio_app)
 
 if __name__ == "__main__":
-    kwargs = {"host":"0.0.0.0", "port":8000}
-    kwargs.update({"debug":True, "reload":True})
-    uvicorn.run('main:app',reload=True)
+    kwargs = {"host": "0.0.0.0", "port": 8000}
+    kwargs.update({"debug": True, "reload": True})
+    uvicorn.run('main:app', reload=True)

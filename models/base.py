@@ -14,9 +14,6 @@ class User(Base):
     rol_id = Column(Integer, ForeignKey('roles.id'))
 
     role = relationship('Rol', back_populates='users')
-    # diagnoses = relationship(
-    #     'Diagnosis', secondary='diagnoses_users', back_populates='users'
-    # )
 
 
 class Rol(Base):
@@ -28,27 +25,25 @@ class Rol(Base):
     description = Column(String(255))
 
     users = relationship('User', back_populates='roles')
+    menus = relationship('MenusRol', back_populates='rol')
 
 
-# class Diagnosis(Base):
+class Menus(Base):
+    __tablename__ = 'menus'
 
-#     __tablename__ = 'diagnoses'
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title = Column(String(127))
+    icon = Column(String(127))
 
-#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     description = Column(String(255))
-#     date = Date()
-
-#     user_id = Column(Integer, ForeignKey('users.id'))
-#     users = relationship(
-#         'User', secondary='diagnoses_users',
-#         back_populates='diagnoses'
-#     )
+    roles = relationship('MenusRol', back_populates='menu')
 
 
-# class DiagnosesUser(Base):
+class MenusRol(Base):
+    __tablename__ = 'menus_roles'
 
-#     __tablename__ = 'diagnoses_users'
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    menu_id = Column(Integer, ForeignKey('menus.id'))
+    rol_id = Column(Integer, ForeignKey('roles.id'))
 
-#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     diagnosis_id = Column(Integer, ForeignKey('diagnoses.id'))
-#     user_id = Column(Integer, ForeignKey('users.id'))
+    menu = relationship('Menus', back_populates='roles')
+    rol = relationship('Rol', back_populates='menus')
