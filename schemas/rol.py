@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 
+
 class RolCreate(BaseModel):
     name: str
+    description: str
 
-class RolOut(BaseModel):
+
+class RolOut(RolCreate):
     id: int
