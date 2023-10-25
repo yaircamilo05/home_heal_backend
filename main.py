@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers.sockets import socketio_app
+from database import Base, engine
 import uvicorn
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 # Configura las políticas CORS
 origins = ["http://localhost:4200"]
