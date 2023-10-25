@@ -1,13 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from database.db import Base, engine
+
 from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user
+from routers import user, rol, diagnosis
+
 import uvicorn
+
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+# Adición de routers
 app.include_router(user.router, tags=["User"])
+app.include_router(rol.router, tags=["Rol"])
+app.include_router(diagnosis.router, tags=["Diagnosis"])
+
 # Configura las políticas CORS
 origins = ["http://localhost:4200"]
 

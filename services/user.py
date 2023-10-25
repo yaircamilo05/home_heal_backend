@@ -1,5 +1,6 @@
+from models.base import User
 from schemas.user import UserCreate
-from models.user import User
+from models.base import User
 from utils.auth import encript_password
 
 def create_user(new_user: UserCreate, db):
@@ -15,10 +16,11 @@ def create_user(new_user: UserCreate, db):
     db.refresh(user)
     return user
 
+
 def exist_user(email: str, db):
     usr = db.query(User).filter(User.email == email).first()
     return usr
 
+
 def all_users(db):
     return db.query(User).all()
-
