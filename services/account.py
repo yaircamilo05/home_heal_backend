@@ -1,5 +1,6 @@
 from models.base import User
 from schemas.user import User as UserGet
+from services.rol import get_role
 from utils import auth, jwt
 from schemas.login import credentials_login
 from services.rol_menu import get_menus_role
@@ -20,7 +21,9 @@ def validate_token(token: str, db) -> dict:
     data_token = jwt.validate_token(token)
     # Retorno de diccionario con los datos del token y el usuario
     menu_roles = get_menus_role(db, data_token['rol_id'])
+    rol = get_role(data_token['rol_id'], db)
     data_token['menus'] = jsonable_encoder(menu_roles)
+    data_token['rol'] = jsonable_encoder(rol)
     if not data_token:
         return None
     return data_token
