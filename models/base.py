@@ -17,7 +17,7 @@ class User(Base):
 
 
 rol_menu = Table(
-    'menu_rol', Base.metadata,
+    'rol_menu', Base.metadata,
     Column('menu_id', ForeignKey('menus.id'), primary_key=True),
     Column('rol_id', ForeignKey('roles.id'), primary_key=True),
 )

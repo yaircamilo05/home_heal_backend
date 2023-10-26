@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session
-from models.base import Rol, Menu
+from models.base import Rol, Menu, rol_menu
+from sqlalchemy import select
 
-async def add_rol_to_menu(db: Session, rol_id: int, menu_id: int) -> bool:
+
+async def add_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
     rol = db.query(Rol).filter(Rol.id == rol_id).first()
     menu = db.query(Menu).filter(Menu.id == menu_id).first()
     if rol and menu:
@@ -10,7 +12,7 @@ async def add_rol_to_menu(db: Session, rol_id: int, menu_id: int) -> bool:
         return True
     return False
 
-async def remove_rol_from_menu(db: Session, rol_id: int, menu_id: int) -> bool:
+async def remove_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
     rol = db.query(Rol).filter(Rol.id == rol_id).first()
     menu = db.query(Menu).filter(Menu.id == menu_id).first()
     if rol and menu:
@@ -18,3 +20,12 @@ async def remove_rol_from_menu(db: Session, rol_id: int, menu_id: int) -> bool:
         db.commit()
         return True
     return False
+
+def get_menus_role(db: Session, role_id: int):
+    stmt = select(Menu).join(rol_menu).join(Rol).where(Rol.id == role_id)
+    menus = db.execute(stmt).scalars().all()
+    return menus
+    # rol = db.query(Rol).filter(Rol.id == role_id).all()
+    # if rol:
+    #     return rol.menus
+    # return None
