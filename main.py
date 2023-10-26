@@ -35,6 +35,6 @@ async def root():
 app.mount("/", socketio_app)
 
 if __name__ == "__main__":
-    kwargs = {"host": "0.0.0.0", "port": 8000}
+    kwargs = {"host": "localhost", "port": 8000}
     kwargs.update({"debug": True, "reload": True})
     uvicorn.run('main:app', reload=True)

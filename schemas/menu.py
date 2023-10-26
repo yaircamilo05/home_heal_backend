@@ -5,6 +5,7 @@ from typing import List, Optional
 class MenuSchema(BaseModel):
     title: str
     icon: str
+    link: str
 
 
 class MenuOut(MenuSchema):
