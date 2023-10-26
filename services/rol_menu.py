@@ -25,7 +25,4 @@ def get_menus_role(db: Session, role_id: int):
     stmt = select(Menu).join(rol_menu).join(Rol).where(Rol.id == role_id)
     menus = db.execute(stmt).scalars().all()
     return menus
-    # rol = db.query(Rol).filter(Rol.id == role_id).all()
-    # if rol:
-    #     return rol.menus
-    # return None
+
