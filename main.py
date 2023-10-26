@@ -4,7 +4,7 @@ from database.db import Base, engine
 
 from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user, rol, menu
+from routers import user, rol, menu, rol_menu
 
 import uvicorn
 
@@ -16,6 +16,8 @@ app = FastAPI()
 app.include_router(user.router, tags=["User"])
 app.include_router(rol.router, tags=["Rol"])
 app.include_router(menu.router, tags=["Menu"])
+app.include_router(rol_menu.router, tags=["RolMenu"])
+
 
 # Configura las políticas CORS
 origins = ["http://localhost:4200"]
