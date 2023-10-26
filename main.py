@@ -22,11 +22,11 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 #se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
 
 # Adición de routers
-app.include_router(account.router, tags=["Account"])
-app.include_router(user.router, tags=["User"])
-app.include_router(rol.router, tags=["Rol"])
-app.include_router(menu.router, tags=["Menu"])
-app.include_router(rol_menu.router, tags=["RolMenu"])
+app.include_router(account.router, tags=["Accounts"], prefix="/account")
+app.include_router(user.router, tags=["Users"], prefix="/user")
+app.include_router(rol.router, tags=["Roles"], prefix="/rol")
+app.include_router(menu.router, tags=["Menus"], prefix="/menu")
+app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 
 
 @app.get("/")
@@ -36,6 +36,6 @@ async def root():
 app.mount("/", socketio_app)
 
 if __name__ == "__main__":
-    kwargs = {"host": "0.0.0.0", "port": 8000}
+    kwargs = {"host": "localhost", "port": 8000}
     kwargs.update({"debug": True, "reload": True})
     uvicorn.run('main:app', reload=True)

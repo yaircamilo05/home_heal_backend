@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from typing import List
 from database.db import get_db
@@ -9,9 +11,10 @@ router = APIRouter()
 
 @router.post("/rol/{rol_id}/menu/{menu_id}")
 def add_menu_to_rol(rol_id: int, menu_id: int, db: Session = Depends(get_db)):
-    if add_rol_menu(db, rol_id, menu_id):
-        return {"message": "Menu added to Rol successfully"}
-    raise HTTPException(status_code=400, detail="Operation failed")
+    data = add_rol_menu(db, rol_id, menu_id);
+    if data is not None:
+        return JSONResponse(status_code=200, content={"data": jsonable_encoder(data)})
+    raise HTTPException(status_code=400, detail={"message": "Operation failed"})
 
 
 @router.get("/menus/{rol_id}")

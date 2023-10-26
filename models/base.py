@@ -39,6 +39,7 @@ class Menu(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     icon = Column(String)
+    link = Column(String)
     roles = relationship(
         'Rol', secondary=rol_menu, back_populates='menus'
     )
