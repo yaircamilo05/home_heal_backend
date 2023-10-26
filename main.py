@@ -19,6 +19,7 @@ app.add_middleware(ErrorHandler)
 origins = ["http://localhost:4200"]
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
+#se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
 
 # Adición de routers
 app.include_router(account.router, tags=["Account"])
