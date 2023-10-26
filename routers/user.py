@@ -25,5 +25,5 @@ def get_all_users(db: Session = Depends(get_db)):
     if not users:
         return JSONResponse(
             status_code=404, content={"message": "No hay usuarios"}
-            )
+        )
     return users
