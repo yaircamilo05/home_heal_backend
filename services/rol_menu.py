@@ -3,7 +3,7 @@ from models.base import Rol, Menu, rol_menu
 from sqlalchemy import select
 
 
-async def add_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
+def add_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
     rol = db.query(Rol).filter(Rol.id == rol_id).first()
     menu = db.query(Menu).filter(Menu.id == menu_id).first()
     if rol and menu:
@@ -12,7 +12,7 @@ async def add_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
         return True
     return False
 
-async def remove_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
+def remove_rol_menu(db: Session, rol_id: int, menu_id: int) -> bool:
     rol = db.query(Rol).filter(Rol.id == rol_id).first()
     menu = db.query(Menu).filter(Menu.id == menu_id).first()
     if rol and menu:
