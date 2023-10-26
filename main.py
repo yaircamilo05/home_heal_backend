@@ -21,11 +21,11 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 
 # Adición de routers
-app.include_router(account.router, tags=["Account"])
-app.include_router(user.router, tags=["User"])
-app.include_router(rol.router, tags=["Rol"])
-app.include_router(menu.router, tags=["Menu"])
-app.include_router(rol_menu.router, tags=["RolMenu"])
+app.include_router(account.router, tags=["Accounts"], prefix="/account")
+app.include_router(user.router, tags=["Users"], prefix="/user")
+app.include_router(rol.router, tags=["Roles"], prefix="/rol")
+app.include_router(menu.router, tags=["Menus"], prefix="/menu")
+app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 
 
 @app.get("/")
