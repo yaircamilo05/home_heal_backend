@@ -1,11 +1,11 @@
 from models.base import Rol
-from schemas.rol import RolCreate
+from schemas.rol import RolSchema
 
 
 # Post rol
 
 
-def post_rol(arg_rol: RolCreate, db):
+def post_rol(arg_rol: RolSchema, db):
     exist = exist_rol(arg_rol.name, db)
     if exist:
         return None
@@ -14,7 +14,7 @@ def post_rol(arg_rol: RolCreate, db):
     db.commit()
     db.refresh(rol)
 
-    return arg_rol
+    return rol
 
 # Get rol
 
@@ -34,7 +34,7 @@ def exist_rol(id: int, db) -> bool:
 # Update rol
 
 
-def put_rol(id: int, rol: RolCreate, db) -> Rol:
+def put_rol(id: int, rol: RolSchema, db) -> Rol:
     if not exist_rol(id, db):
         return None
     db.query(Rol).filter(Rol.id == id).update(rol.model_dump())
