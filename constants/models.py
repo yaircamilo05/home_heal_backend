@@ -1,0 +1,1 @@
+DEFAULT_IMG = 'https://estremorstorageaccount.blob.core.windows.net/estremoruserscontainer/usuario_318-804790.png'

@@ -3,12 +3,16 @@ from schemas.user import UserCreate
 from schemas.user import User as UserGet
 from models.base import User
 from utils import auth
+from constants.models import DEFAULT_IMG
 
 def create_user(new_user: UserCreate, db):
     exist = exist_user(new_user.email, db)
     if exist:
         return None
     user = User(**new_user.model_dump())
+    if user.file_img == '' or user.file_img is None:
+        user.file_img = DEFAULT_IMG
+
     # Encriptation of the password
     user.password = auth.encript_password(user.password)
     ## Acá va la logica de consulta en la base de datos
