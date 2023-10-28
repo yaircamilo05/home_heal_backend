@@ -18,7 +18,6 @@ def login(credentials: credentials_login, db: Session = Depends(get_db)):
     token = account.login(credentials, db)
     if token is None:
         return JSONResponse(status_code=404, content={"message": "Usuario no se encontro"})
-    # print("Token", token)
     return JSONResponse(status_code=200, content={"token": token})
 
 
