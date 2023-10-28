@@ -17,7 +17,7 @@ app.version = "1.0"
 
 #Adicion de middlewares
 app.add_middleware(ErrorHandler)
-origins = ["http://localhost:4200"]
+origins = ["http://localhost:4200","https://home-heal-web.azurewebsites.net"]
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 #se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
