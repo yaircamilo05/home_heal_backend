@@ -1,7 +1,7 @@
 from fastapi import UploadFile
-from fastapi import FastAPI, UploadFile, File
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-import os
+from fastapi import UploadFile
+from azure.storage.blob import BlobServiceClient
+
 
 # Configura la conexión a Azure Blob Storage
 connection_string = "DefaultEndpointsProtocol=https;AccountName=estremorstorageaccount;AccountKey=/mCPhntPNfJg04502cvRTNd1ZooObPUYWl9hC3fWv60h8bl/NHCfC8yTkGQkH7Z6PMIcmFgdrnQd+AStIQSUMA==;EndpointSuffix=core.windows.net"
