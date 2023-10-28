@@ -13,7 +13,7 @@ router = APIRouter(dependencies=[Depends(SuperAdmin())])
 
 
 @router.post('/role', response_model=RolSchema)
-async def create_rol(rol: RolSchema, db: Session = Depends(get_db)):
+async def create_rol(rol: RolSchema,db: Session = Depends(get_db)):
     return post_rol(rol, db)
 
 
