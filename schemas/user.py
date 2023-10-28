@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from fastapi import UploadFile
 from schemas.menu import MenuOut
 from typing import List, Optional
 from constants.models import DEFAULT_IMG
@@ -8,7 +9,7 @@ class User(BaseModel):
     name: str
     lastname: str
     email: str
-    file_img: Optional[str]
+    file_img: Optional[UploadFile]
     rol_id: int
 
 
