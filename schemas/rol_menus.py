@@ -1,13 +1,13 @@
 from typing import List, Optional
-from .rol import RolSchema
+from .rol import RolBase
 from .menu import MenuOut, MenuOut
 from pydantic import BaseModel
 
-class RolWithMenus(RolSchema):
+class RolWithMenus(RolBase):
     menus: List[MenuOut] = []
 
 class MenuWithRoles(MenuOut):
-    roles: List[RolSchema] = []
+    roles: List[RolBase] = []
 
 class RolMenuSchema(BaseModel):
     rol: RolWithMenus
