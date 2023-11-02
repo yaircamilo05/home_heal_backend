@@ -7,7 +7,7 @@ from typing import List, Optional
 
 class RolSchema(BaseModel):
     name: str
-    description: Optional[str] = None
+    description:str 
 
 
 class RolOut(RolSchema):

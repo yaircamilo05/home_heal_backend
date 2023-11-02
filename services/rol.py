@@ -1,5 +1,5 @@
 from models.base import Rol
-from schemas.rol import RolSchema
+from schemas.rol import RolOut, RolSchema
 
 
 # Post rol
@@ -14,7 +14,7 @@ def post_rol(arg_rol: RolSchema, db):
     db.commit()
     db.refresh(rol)
 
-    return rol
+    return RolOut(**rol.__dict__) 
 
 # Get rol
 
@@ -27,8 +27,8 @@ def get_role(id: int, db) -> Rol:
     return db.query(Rol).filter(Rol.id == id).first()
 
 
-def exist_rol(id: int, db) -> bool:
-    rol = db.query(Rol).filter(Rol.id == id).first()
+def exist_rol(name: str, db) -> bool:
+    rol = db.query(Rol).filter(Rol.name == name).first()
     return rol
 
 # Update rol

@@ -42,7 +42,7 @@ class Rol(Base):
 class Menu(Base):
     __tablename__ = 'menus'
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
+    title = Column(String)
     icon = Column(String)
     link = Column(String)
     roles = relationship(
