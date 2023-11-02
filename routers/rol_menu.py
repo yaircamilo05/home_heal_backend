@@ -13,8 +13,8 @@ router = APIRouter()
 def add_menu_to_rol(rol_id: int, menu_id: int, db: Session = Depends(get_db)):
     data = add_rol_menu(db, rol_id, menu_id);
     if data is not None:
-        return JSONResponse(status_code=200, content={"data": jsonable_encoder(data)})
-    raise HTTPException(status_code=400, detail={"message": "Operation failed"})
+        HTTPException(status_code=400, detail={"message": "Operation failed"})
+    return JSONResponse(status_code=200, content={"data": jsonable_encoder(data)})
 
 
 @router.get("/menus/{rol_id}")
