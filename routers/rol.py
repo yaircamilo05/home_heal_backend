@@ -9,10 +9,10 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from services.rol import post_rol, exist_rol, get_roles, get_role, put_rol, delete_rol
 
-router = APIRouter(dependencies=[Depends(SuperAdmin())])
+router = APIRouter()
 
 
-@router.post('/role', response_model=RolSchema)
+@router.post('/role')
 async def create_rol(rol: RolSchema,db: Session = Depends(get_db)):
     return post_rol(rol, db)
 
