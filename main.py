@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
@@ -36,8 +37,9 @@ async def root():
     return {"message": "Welcome to Home Heal server!"}
 
 app.mount("/", socketio_app)
+port = int(os.environ.get("PORT", 8000))
 
 if __name__ == "__main__":
-    kwargs = {"host": "localhost", "port": 8000}
+    kwargs = {"host": "localhost", "port": port}
     kwargs.update({"debug": True, "reload": True})
     uvicorn.run('main:app', reload=True)
