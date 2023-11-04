@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from database.db import get_db
-from middlewares.guard import SuperAdmin
 from schemas.rol import RolCreate, RolUpdate, RolOut
 from services.rol import (
     post_rol, get_roles, get_role, put_rol, delete_rol
