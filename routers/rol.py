@@ -25,22 +25,23 @@ async def create_rol(rol: RolCreate, db: Session = Depends(get_db)):
     rol_created = post_rol(rol, db)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
-        content=jsonable_encoder(rol_created)
+        content={'data': jsonable_encoder(rol_created)}
     )
 
 
 @router.get('/roles', response_model=List[RolSchema], status_code=status.HTTP_302_FOUND)
 async def read_roles(db: Session = Depends(get_db)):
     roles = get_roles(db)
-    print(roles)
     if not roles:
         raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
-            headers={'X-Error': f'There are no found roles: {jsonable_encoder(roles)}'}
+            headers={
+                'X-Error': f'There are no found roles: {jsonable_encoder(roles)}'
+            }
         )
     return JSONResponse(
         status_code=status.HTTP_302_FOUND,
-        content=jsonable_encoder(roles)
+        content={'data': jsonable_encoder(roles)}
     )
 
 
@@ -54,7 +55,7 @@ async def read_rol(id: int, db: Session = Depends(get_db)):
     rol: RolSchema = get_role(id, db)
     return JSONResponse(
         status_code=status.HTTP_302_FOUND,
-        content=jsonable_encoder(rol)
+        content={'data': jsonable_encoder(rol)}
     )
 
 
@@ -68,7 +69,7 @@ async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)):
     rol_updated: RolSchema = put_rol(id, rol, db)
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
-        content=jsonable_encoder(rol_updated)
+        content={'data': jsonable_encoder(rol_updated)}
     )
 
 
@@ -82,5 +83,5 @@ async def remove_role(id: int, db: Session = Depends(get_db)):
     rol_removed: RolSchema = delete_rol(id, db)
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
-        content=jsonable_encoder(rol_removed)
+        content={'data': jsonable_encoder(rol_removed)}
     )
