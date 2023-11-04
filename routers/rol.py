@@ -40,7 +40,7 @@ async def read_roles(db: Session = Depends(get_db)):
             }
         )
     return JSONResponse(
-        status_code=status.HTTP_302_FOUND,
+        status_code=status.HTTP_200_OK,
         content={'data': jsonable_encoder(roles)}
     )
 
