@@ -7,7 +7,7 @@ from typing import Optional
 
 class RolBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description:str 
 
 
 class RolCreate(RolBase):

@@ -12,7 +12,7 @@ from services.rol import (
 )
 
 
-router = APIRouter(dependencies=[Depends(SuperAdmin())])
+router = APIRouter()
 
 
 @router.post('/role', response_model=RolSchema, status_code=status.HTTP_201_CREATED)
