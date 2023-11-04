@@ -16,7 +16,7 @@ router = APIRouter()
 
 
 @router.post('/role', response_model=RolOut)
-async def create_rol(rol: RolCreate, db: Session = Depends(get_db)):
+async def create_rol(rol: RolCreate, db: Session = Depends(get_db)) -> RolOut:
     rol_created: RolOut = post_rol(rol, db)
     if rol_created is None:
         raise HTTPException(
@@ -30,7 +30,7 @@ async def create_rol(rol: RolCreate, db: Session = Depends(get_db)):
 
 
 @router.get('/roles', response_model=List[RolOut])
-async def read_roles(db: Session = Depends(get_db)):
+async def read_roles(db: Session = Depends(get_db)) -> List[RolOut]:
     roles: RolOut = get_roles(db)
     if not roles:
         raise HTTPException(
@@ -46,7 +46,7 @@ async def read_roles(db: Session = Depends(get_db)):
 
 
 @router.get('/role/{id}', response_model=RolOut)
-async def read_rol(id: int, db: Session = Depends(get_db)):
+async def read_rol(id: int, db: Session = Depends(get_db)) -> RolOut:
     rol: RolOut = get_role(id, db)
     if rol is None:
         raise HTTPException(
@@ -62,7 +62,7 @@ async def read_rol(id: int, db: Session = Depends(get_db)):
 
 
 @router.put('/role/{id}', response_model=RolOut)
-async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)):
+async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) -> RolOut:
     rol_updated: RolOut = put_rol(id, rol, db)
     if rol_updated is None:
         raise HTTPException(
