@@ -14,7 +14,7 @@ def post_rol(rol: RolCreate, database: Session) -> RolOut:
     database.commit()
     database.refresh(db_rol)
 
-    return RolOut(**rol.__dict__)
+    return RolOut(**db_rol.__dict__)
 
 # Get rol
 
@@ -53,13 +53,13 @@ def put_rol(id: int, db_rol: RolUpdate, database: Session) -> RolOut:
 # Delete rol
 
 
-def delete_rol(id: int, database: Session) -> RolOut:
+def delete_rol(id: int, database: Session) -> bool:
     db_rol: Rol = database.query(Rol).filter(Rol.id == id).first()
     if db_rol is None:
-        return None
+        return False
     database.delete(db_rol)
     database.commit()
-    return RolOut(**db_rol.__dict__)
+    return True
 
 # Utils
 

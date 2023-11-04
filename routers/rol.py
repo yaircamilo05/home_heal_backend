@@ -6,32 +6,32 @@ from typing import List
 
 from database.db import get_db
 from middlewares.guard import SuperAdmin
-from schemas.rol import RolCreate, RolUpdate, RolSchema
+from schemas.rol import RolCreate, RolUpdate, RolOut
 from services.rol import (
-    post_rol, get_roles, get_role, put_rol, delete_rol, exist_rol_id, exist_rol_name
+    post_rol, get_roles, get_role, put_rol, delete_rol
 )
 
 
 router = APIRouter()
 
 
-@router.post('/role', response_model=RolSchema, status_code=status.HTTP_201_CREATED)
+@router.post('/role', response_model=RolOut)
 async def create_rol(rol: RolCreate, db: Session = Depends(get_db)):
-    if exist_rol_name(rol.name, db):
+    rol_created: RolOut = post_rol(rol, db)
+    if rol_created is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f'Rol {rol.name} already exist'
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f'Rol {rol.name} already exists'
         )
-    rol_created = post_rol(rol, db)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content={'data': jsonable_encoder(rol_created)}
     )
 
 
-@router.get('/roles', response_model=List[RolSchema], status_code=status.HTTP_302_FOUND)
+@router.get('/roles', response_model=List[RolOut])
 async def read_roles(db: Session = Depends(get_db)):
-    roles = get_roles(db)
+    roles: RolOut = get_roles(db)
     if not roles:
         raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -45,43 +45,46 @@ async def read_roles(db: Session = Depends(get_db)):
     )
 
 
-@router.get('/role/{id}', response_model=RolSchema, status_code=status.HTTP_302_FOUND)
+@router.get('/role/{id}', response_model=RolOut)
 async def read_rol(id: int, db: Session = Depends(get_db)):
-    if not exist_rol_id(id, db):
+    rol: RolOut = get_role(id, db)
+    if rol is None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Rol {id} was not found'
+            status_code=status.HTTP_204_NO_CONTENT,
+            headers={
+                'X-Error': f'Rol {id} was not found'
+            }
         )
-    rol: RolSchema = get_role(id, db)
     return JSONResponse(
-        status_code=status.HTTP_302_FOUND,
+        status_code=status.HTTP_200_OK,
         content={'data': jsonable_encoder(rol)}
     )
 
 
-@router.put('/role/{id}', response_model=RolSchema, status_code=status.HTTP_302_FOUND)
+@router.put('/role/{id}', response_model=RolOut)
 async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)):
-    if not exist_rol_id(id, db):
+    rol_updated: RolOut = put_rol(id, rol, db)
+    if rol_updated is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f'Rol {id} was not found'
         )
-    rol_updated: RolSchema = put_rol(id, rol, db)
+
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
         content={'data': jsonable_encoder(rol_updated)}
     )
 
 
-@router.delete('/role/{id}', response_model=RolSchema, status_code=status.HTTP_302_FOUND)
-async def remove_role(id: int, db: Session = Depends(get_db)):
-    if not exist_rol_id(id, db):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Rol {id} was not found'
+@router.delete('/role/{id}')
+async def remove_role(id: int, db: Session = Depends(get_db)) -> bool:
+    rol_removed: RolOut = delete_rol(id, db)
+    if rol_removed:
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={'data': True}
         )
-    rol_removed: RolSchema = delete_rol(id, db)
-    return JSONResponse(
-        status_code=status.HTTP_202_ACCEPTED,
-        content={'data': jsonable_encoder(rol_removed)}
+    raise JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={'data': False}
     )

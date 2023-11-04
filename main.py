@@ -4,8 +4,7 @@ from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user, rol,account, menu, rol_menu
-from routers import file
+from routers import user, rol, account, menu, rol_menu, file
 
 import uvicorn
 
@@ -15,12 +14,15 @@ app = FastAPI()
 app.title = "Home Heal API"
 app.version = "1.0"
 
-#Adicion de middlewares
+# Adicion de middlewares
 app.add_middleware(ErrorHandler)
-origins = ["http://localhost:4200","https://home-heal-web.azurewebsites.net"]
-app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+origins = ["http://localhost:4200", "https://home-heal-web.azurewebsites.net"]
+app.add_middleware(
+    CORSMiddleware, allow_origins=origins,
+    allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
+)
 
-#se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
+# se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
 
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")

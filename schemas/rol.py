@@ -7,7 +7,7 @@ from typing import Optional
 
 class RolBase(BaseModel):
     name: str
-    description:str 
+    description: str
 
 
 class RolCreate(RolBase):
@@ -19,9 +19,5 @@ class RolUpdate(BaseModel):
     description: Optional[str]
 
 
-class RolSchema(RolBase):
+class RolOut(RolBase):
     id: int
-
-    # class Config:
-    #     orm_mode = True
-    #     from_attributes = True
