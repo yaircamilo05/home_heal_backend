@@ -9,7 +9,6 @@ class RolBase(BaseModel):
     name: str
     description: str
 
-
 class RolCreate(RolBase):
     pass
 
