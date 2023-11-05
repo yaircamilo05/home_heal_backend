@@ -38,12 +38,12 @@ def exist_rol(name: str, db) -> bool:
 # Update rol
 
 
-def put_rol(id: int, db_rol: RolUpdate, database: Session) -> RolOut:
+def put_rol(id: int, rol: RolUpdate, database: Session) -> RolOut:
     db_rol: Rol = database.query(Rol).filter(Rol.id == id).first()
     if db_rol is None:
         return None
 
-    for attr, value in db_rol.model_dump().items():
+    for attr, value in rol.model_dump().items():
         setattr(db_rol, attr, value)
 
     database.commit()
