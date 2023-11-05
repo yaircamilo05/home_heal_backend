@@ -1,5 +1,7 @@
+from fastapi.encoders import jsonable_encoder
 from models.base import Rol
-from schemas.rol import RolOut, RolSchema
+from schemas.rol import RolOut, RolSchema, RolWithMenus
+from services.rol_menu import get_menus_role
 
 
 # Post rol
@@ -21,6 +23,17 @@ def post_rol(arg_rol: RolSchema, db):
 
 def get_roles(db) -> list[Rol]:
     return db.query(Rol).all()
+
+def get_roles_with_menus(db) -> list[RolWithMenus]:
+    roles_with_menus:RolWithMenus = []
+    roles = db.query(Rol).all()
+    for rol in roles:
+        menus_rol = get_menus_role(db, rol.id)
+        rol_dict = rol.__dict__
+        rol_dict['menus'] = jsonable_encoder(menus_rol)
+        rol_with_menus = RolWithMenus(**rol_dict)
+        roles_with_menus.append(rol_with_menus)
+    return roles_with_menus
 
 
 def get_role(id: int, db) -> Rol:
