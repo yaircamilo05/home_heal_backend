@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database.db import get_db
 from schemas.menu import MenuSchema, MenuOut
@@ -46,7 +46,13 @@ def update_menu(menu_id: int, menu: MenuSchema, db: Session = Depends(get_db)):
 
 @router.delete("/delete_menu/{menu_id}", response_model=MenuOut)
 def delete_menu_route(menu_id: int, db: Session = Depends(get_db)):
-    db_menu = delete_menu(db, menu_id=menu_id)
-    if db_menu is None:
-        raise HTTPException(status_code=404, detail="Menu not found")
-    return JSONResponse(content=jsonable_encoder({"data": db_menu}))
+    menu_removed = delete_menu(db, menu_id=menu_id)
+    if menu_removed is None:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={'data': False}
+        )
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={'data': True}
+    )
