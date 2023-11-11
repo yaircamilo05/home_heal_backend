@@ -2,7 +2,13 @@ from typing import Optional
 from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
-from constants.models import DEFAULT_IMG
+
+
+rol_menu = Table(
+    'rol_menu', Base.metadata,
+    Column('menu_id', ForeignKey('menus.id'), primary_key=True),
+    Column('rol_id', ForeignKey('roles.id'), primary_key=True),
+)
 
 
 class User(Base):
@@ -17,13 +23,6 @@ class User(Base):
     rol_id = Column(Integer, ForeignKey('roles.id'))
 
     rol = relationship('Rol', back_populates='users')
-
-
-rol_menu = Table(
-    'rol_menu', Base.metadata,
-    Column('menu_id', ForeignKey('menus.id'), primary_key=True),
-    Column('rol_id', ForeignKey('roles.id'), primary_key=True),
-)
 
 
 class Rol(Base):
