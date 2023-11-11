@@ -10,7 +10,7 @@ from middlewares.guard import SuperAdmin
 from schemas.rol import RolCreate, RolOut, RolUpdate
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from services.rol import get_roles_with_menus, post_rol, exist_rol, get_roles, get_role, put_rol, delete_rol
+from services.rol import post_rol, exist_rol, get_roles, get_role, put_rol, delete_rol
 
 router = APIRouter()
 
