@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.base import Rol, Menu, rol_menu
+from models.base import Rol, Menu, rol_menus
 from sqlalchemy import select
 
 
@@ -44,6 +44,6 @@ def remove_role_menu(db: Session, rol_id: int, menu_id: int) -> bool:
 
 
 def get_menus_role(db: Session, role_id: int):
-    stmt = select(Menu).join(rol_menu).join(Rol).where(Rol.id == role_id)
+    stmt = select(Menu).join(rol_menus).join(Rol).where(Rol.id == role_id)
     menus = db.execute(stmt).scalars().all()
     return menus
