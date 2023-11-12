@@ -39,6 +39,8 @@ def put_menu(db: Session, menu_id: int, menu: MenuSchema) -> Menu:
 
 def delete_menu(db: Session, menu_id: int) -> Menu:
     db_menu = db.query(Menu).filter(Menu.id == menu_id).first()
+    if db_menu is None:
+        return None
     if db_menu:
         db.delete(db_menu)
         db.commit()
