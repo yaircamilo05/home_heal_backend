@@ -2,6 +2,8 @@ from fastapi.encoders import jsonable_encoder
 from models.base import Rol
 from sqlalchemy.orm import Session
 from schemas.rol import RolCreate, RolUpdate, RolOut
+from schemas.rol_menus import RolWithMenus
+from services.rol_menu import get_menus_role
 
 
 # Post rol
@@ -23,16 +25,16 @@ def post_rol(rol: RolCreate, database: Session) -> RolOut:
 def get_roles(db) -> list[Rol]:
     return db.query(Rol).all()
 
-# def get_roles_with_menus(db) -> list[RolWithMenus]:
-#     roles_with_menus:RolWithMenus = []
-#     roles = db.query(Rol).all()
-#     for rol in roles:
-#         menus_rol = get_menus_role(db, rol.id)
-#         rol_dict = rol.__dict__
-#         rol_dict['menus'] = jsonable_encoder(menus_rol)
-#         rol_with_menus = RolWithMenus(**rol_dict)
-#         roles_with_menus.append(rol_with_menus)
-#     return roles_with_menus
+def get_roles_with_menus(db) -> list[RolWithMenus]:
+    roles_with_menus:RolWithMenus = []
+    roles = db.query(Rol).all()
+    for rol in roles:
+        menus_rol = get_menus_role(db, rol.id)
+        rol_dict = rol.__dict__
+        rol_dict['menus'] = jsonable_encoder(menus_rol)
+        rol_with_menus = RolWithMenus(**rol_dict)
+        roles_with_menus.append(rol_with_menus)
+    return roles_with_menus
 
 
 def get_role(id: int, database: Session) -> RolOut:
