@@ -9,7 +9,7 @@ class User(BaseModel):
     name: str
     lastname: str
     email: str
-    file_img: str
+    image_url: str
     rol_id: int
 
 
