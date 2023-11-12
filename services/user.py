@@ -10,8 +10,8 @@ def create_user(new_user: UserCreate, db):
     if exist:
         return None
     user = User(**new_user.model_dump())
-    if user.file_img == '' or user.file_img is None:
-        user.file_img = DEFAULT_IMG
+    if user.image_url == '' or user.image_url is None:
+        user.image_url = DEFAULT_IMG
 
     # Encriptation of the password
     user.password = auth.encript_password(user.password)
