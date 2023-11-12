@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from schemas.user import User, UserCreate
 from database.db import get_db
@@ -13,10 +13,8 @@ router = APIRouter()
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     new_user = create_user(user, db)
     if not new_user:
-        return JSONResponse(
-            status_code=400, content={"message": "Error al crear el usuario"}
-        )
-    return User(**new_user.__dict__)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Error al crear el usuario"})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data": User(**new_user.__dict__)})
 
 
 @router.get("/get_all_users")
