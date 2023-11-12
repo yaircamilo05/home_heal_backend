@@ -5,8 +5,6 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from database.db import get_db
-from sqlalchemy.orm import Session
-from middlewares.guard import SuperAdmin
 from schemas.rol import RolCreate, RolOut, RolUpdate
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
