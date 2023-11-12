@@ -14,6 +14,8 @@ class User(Base):
     file_img = Column(String(255), nullable=True)
     email = Column(String(100), unique=True)
     password = Column(String(100))
+    phone = Column(String(20))
+    cc = Column(String(20))
     rol_id = Column(Integer, ForeignKey('roles.id'))
 
     rol = relationship('Rol', back_populates='users')
