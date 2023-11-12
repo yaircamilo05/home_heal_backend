@@ -1,6 +1,6 @@
 from models.base import User
-from schemas.user import UserCreate
-from schemas.user import User as UserGet
+from schemas.user import UserCreate, UserGet
+from schemas.user import User as UserSchema
 from models.base import User
 from utils import auth
 from constants.models import DEFAULT_IMG
@@ -23,6 +23,7 @@ def create_user(new_user: UserCreate, db):
 
 
 def exist_user(email: str, db):
+    print(email)
     usr = db.query(User).filter(User.email == email).first()
     return usr
 
@@ -39,6 +40,7 @@ def put_user(id: int, user: User, db):
     db_user: User = db.query(User).filter(User.id == id).first()
     if db_user is None:
         return None
+    
     for attr, value in user.model_dump().items():
         setattr(db_user, attr, value)
     db.commit()
