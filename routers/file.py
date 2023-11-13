@@ -1,5 +1,6 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, Depends, UploadFile
 from fastapi.responses import JSONResponse
+from middlewares.guard import SuperAdmin
 from utils.azure import upload_file_to_azurecontainer
 
 
