@@ -4,8 +4,24 @@ from sqlalchemy.orm import relationship
 from database.db import Base
 
 
-rol_menus = Table(
-    'rol_menus', Base.metadata,
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100))
+    lastname = Column(String(100))
+    file_img = Column(String(255), nullable=True)
+    email = Column(String(100), unique=True)
+    password = Column(String(100))
+    phone = Column(String(20))
+    cc = Column(String(20))
+    rol_id = Column(Integer, ForeignKey('roles.id'))
+
+    rol = relationship('Rol', back_populates='users')
+
+
+rol_menu = Table(
+    'rol_menu', Base.metadata,
     Column('menu_id', ForeignKey('menus.id'), primary_key=True),
     Column('rol_id', ForeignKey('roles.id'), primary_key=True),
 )
