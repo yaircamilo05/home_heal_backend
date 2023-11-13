@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from database.db import Base
 
 rol_menus = Table(
-    'rol_menu', Base.metadata,
+    'rol_menus', Base.metadata,
     Column('menu_id', ForeignKey('menus.id'), primary_key=True),
     Column('rol_id', ForeignKey('roles.id'), primary_key=True),
 )
@@ -20,7 +20,6 @@ DoctorPatients = Table(
 class Menu(Base):
     __tablename__ = 'menus'
     id = Column(Integer, primary_key=True, autoincrement=True)
-
     title = Column(String)
     icon = Column(String)
     link = Column(String)
