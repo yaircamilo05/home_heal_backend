@@ -43,14 +43,15 @@ async def read_roles(db: Session = Depends(get_db)) -> List[RolOut]:
         content={'data': jsonable_encoder(roles)}
     )
 
+
 @router.get('/roles_with_menus', response_model=List[RolWithMenus])
 async def read_roles(db: Session = Depends(get_db)):
-    roles_with_menus =  get_roles_with_menus(db)
+    roles_with_menus = get_roles_with_menus(db)
     if roles_with_menus is None:
         raise HTTPException(
             status_code=404, detail=f'Rol not found'
         )
-    return JSONResponse(status_code=200, content={ "data":jsonable_encoder(roles_with_menus)})
+    return JSONResponse(status_code=200, content={"data": jsonable_encoder(roles_with_menus)})
 
 
 @router.get('/role/{id}', response_model=RolOut)
