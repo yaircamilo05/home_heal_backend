@@ -88,7 +88,7 @@ async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) ->
 
 @router.delete('/role/{id}')
 async def remove_role(id: int, db: Session = Depends(get_db)) -> bool:
-    rol_removed: RolOut = delete_rol(id, db)
+    rol_removed: bool = delete_rol(id, db)
     if rol_removed:
         return JSONResponse(
             status_code=status.HTTP_200_OK,
