@@ -6,6 +6,7 @@ from constants.models import DEFAULT_IMG
 
 
 class User(BaseModel):
+    ##id: int
     name: str
     lastname: str
     email: str
@@ -19,3 +20,12 @@ class UserCreate(User):
 
 class UserWithMenus(MenuOut):
     menus: List[MenuOut] = []
+
+
+class UserGet(User):
+    id: int
+    name: str
+    lastname: str
+    email: str
+    image_url: str
+    rol_id: int

@@ -3,7 +3,6 @@ from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
 
-
 rol_menus = Table(
     'rol_menus', Base.metadata,
     Column('menu_id', ForeignKey('menus.id'), primary_key=True),
@@ -21,7 +20,6 @@ DoctorPatients = Table(
 class Menu(Base):
     __tablename__ = 'menus'
     id = Column(Integer, primary_key=True, autoincrement=True)
-
     title = Column(String)
     icon = Column(String)
     link = Column(String)
@@ -36,6 +34,8 @@ class User(Base):
     image_url = Column(String(255), nullable=True)
     email = Column(String(100), unique=True)
     password = Column(String(100))
+    phone = Column(String(20))
+    cc = Column(String(20))
 
     rol_id = Column(Integer, ForeignKey('roles.id'))
     rol = relationship('Rol', back_populates='users')
