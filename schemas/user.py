@@ -11,6 +11,8 @@ class User(BaseModel):
     email: str
     image_url: str
     rol_id: int
+    cc: str
+    phone: str
 
 
 class UserCreate(User):

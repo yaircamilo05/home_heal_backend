@@ -14,7 +14,7 @@ class UserRegister(BaseModel):
     lastname: str
     phone: str
     email: str
-    CC: str
+    cc: str
     password: str
     gender: str
     image_url: str

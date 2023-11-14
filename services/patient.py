@@ -33,8 +33,10 @@ def create_user_pacient(user: UserRegister,db) -> int:
         name = user.name,
         lastname = user.lastname,
         email = user.email,
-        image_url = DEFAULT_IMG,
+        image_url = user.image_url,
         password = user.password,
+        phone = user.phone,
+        cc = user.cc,
         rol_id = 2
     )
     
@@ -48,8 +50,10 @@ def create_user_familiar(user: UserRegister,db) -> int:
         name = user.familiar_name,
         lastname = user.familiar_lastname,
         email = user.familiar_email,
-        image_url = DEFAULT_IMG,
+        image_url = user.image_url,
         password = user.password,
+        phone = user.familiar_phone,
+        cc = '',
         rol_id = 3
     )
     new_user = create_user(user_create,db)
