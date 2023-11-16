@@ -10,10 +10,8 @@ dotenv_path = os.path.join('environments', path)
 load_dotenv(dotenv_path=dotenv_path)
 
 CONECTION_STRING = os.getenv("CONTAINER_IMAGES_AZURE_CONECTION_STRING")
-# Configura la conexión a Azure Blob Storage
 connection_string = CONECTION_STRING
 container_name = 'hh-user-images'
-
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 container_client = blob_service_client.get_container_client(container_name)
 
