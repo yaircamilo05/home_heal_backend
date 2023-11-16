@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Form, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from requests import Session
@@ -11,7 +11,7 @@ from services.patient import all_patients, register_user
 router = APIRouter()
 
 @router.post("/register_user")
-def register_patient_user(user: UserRegister, db: Session = Depends(get_db)):
+def register_patient_user(user: UserRegister = Form(...), db: Session = Depends(get_db)):
     new_patient = register_user(user, db)
     if new_patient == None:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Error al registrar el usuario"})

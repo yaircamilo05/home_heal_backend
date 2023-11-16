@@ -1,3 +1,4 @@
+from fastapi import UploadFile
 from pydantic import BaseModel
 from datetime import date
 
@@ -17,7 +18,7 @@ class UserRegister(BaseModel):
     cc: str
     password: str
     gender: str
-    image_url: str
+    image_file: UploadFile
     birthdate: date 
     address: str
     description: str

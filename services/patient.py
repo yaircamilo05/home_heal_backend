@@ -7,6 +7,7 @@ from schemas.user import UserCreate
 from schemas.patient import PatientOut as PatientGet
 from services.user import create_user
 from utils import auth
+from utils import azure
 
 #Register user
 def register_user(user: UserRegister,db) -> Patient:
@@ -19,21 +20,24 @@ def register_user(user: UserRegister,db) -> Patient:
     Returns:
         Patient: The patient in case it has been created successfully. In case it has not been created, it returns null to send a bad request from the router section.
     """
-    user_patient_id = create_user_pacient(user,db)
+    user_patient_id = create_user_patient(user,db)
     user_familiar_id = create_user_familiar(user,db)
    
     if user_patient_id and user_familiar_id:
-        return create_pacient(user,user_patient_id,user_familiar_id,db)
+        return create_patient(user,user_patient_id,user_familiar_id,db)
     
     return None
 
 #Create user to pacient
-def create_user_pacient(user: UserRegister,db) -> int:
+def create_user_patient(user: UserRegister,db) -> int:
+    
+    image_url = azure.upload_file_to_azurecontainer(user.image_file, user.image_file.filename)
+    
     user_create = UserCreate(
         name = user.name,
         lastname = user.lastname,
         email = user.email,
-        image_url = user.image_url,
+        image_url = image_url,
         password = user.password,
         phone = user.phone,
         cc = user.cc,
@@ -50,7 +54,7 @@ def create_user_familiar(user: UserRegister,db) -> int:
         name = user.familiar_name,
         lastname = user.familiar_lastname,
         email = user.familiar_email,
-        image_url = user.image_url,
+        image_url = DEFAULT_IMG,
         password = user.password,
         phone = user.familiar_phone,
         cc = '',
@@ -60,8 +64,8 @@ def create_user_familiar(user: UserRegister,db) -> int:
     new_user_id = new_user.id
     return new_user_id
 
-#Create pacient whit user_pacient_id and user_familiar_id
-def create_pacient(user: UserRegister, user_familiar_id: int, user_pacient_id: int ,db):
+#Create patient whit user_patient_id and user_familiar_id
+def create_patient(user: UserRegister, user_familiar_id: int, user_pacient_id: int ,db):
     
     patient_create = PatientOut(
         gender = user.gender,
