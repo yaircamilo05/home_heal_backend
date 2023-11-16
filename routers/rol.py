@@ -72,7 +72,6 @@ async def read_rol(id: int, db: Session = Depends(get_db)) -> RolOut:
 
 @router.put('/role/{id}', response_model=RolOut)
 async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) -> RolOut:
-    print(rol)
     rol_updated: RolOut = put_rol(id, rol, db)
     if rol_updated is None:
         raise HTTPException(
