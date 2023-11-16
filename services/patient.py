@@ -1,4 +1,5 @@
 #service
+from fastapi import UploadFile
 from constants.models import DEFAULT_IMG
 from models.base import Patient, User
 from schemas.patient import PatientOut
@@ -10,7 +11,7 @@ from utils import auth
 from utils import azure
 
 #Register user
-def register_user(user: UserRegister,db) -> Patient:
+def register_user(user: UserRegister, image_file: UploadFile, db) -> Patient:
     """_summary_
 
     Args:
@@ -20,7 +21,7 @@ def register_user(user: UserRegister,db) -> Patient:
     Returns:
         Patient: The patient in case it has been created successfully. In case it has not been created, it returns null to send a bad request from the router section.
     """
-    user_patient_id = create_user_patient(user,db)
+    user_patient_id = create_user_patient(user,image_file,db)
     user_familiar_id = create_user_familiar(user,db)
    
     if user_patient_id and user_familiar_id:
@@ -29,9 +30,9 @@ def register_user(user: UserRegister,db) -> Patient:
     return None
 
 #Create user to pacient
-def create_user_patient(user: UserRegister,db) -> int:
+def create_user_patient(user: UserRegister, image_file:UploadFile,db) -> int:
     
-    image_url = azure.upload_file_to_azurecontainer(user.image_file, user.image_file.filename)
+    image_url = azure.upload_file_to_azurecontainer(image_file, image_file.filename)
     
     user_create = UserCreate(
         name = user.name,

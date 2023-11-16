@@ -18,7 +18,6 @@ class UserRegister(BaseModel):
     cc: str
     password: str
     gender: str
-    image_file: UploadFile
     birthdate: date 
     address: str
     description: str
