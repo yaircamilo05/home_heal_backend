@@ -34,8 +34,8 @@ class User(Base):
     image_url = Column(String(255), nullable=True)
     email = Column(String(100), unique=True)
     password = Column(String(100))
-    phone = Column(String(20))
-    cc = Column(String(20))
+    phone = Column(String(15))
+    cc = Column(String(15), nullable=True)
 
     rol_id = Column(Integer, ForeignKey('roles.id'))
     rol = relationship('Rol', back_populates='users')
@@ -60,7 +60,7 @@ class Patient(Base):
     birthdate = Column(Date)
     description = Column(String(255))
     address = Column(String(255))
-
+    
     user_id = Column(Integer, ForeignKey('users.id'))
     familiar_user_id = Column(Integer, ForeignKey('users.id'))
 
