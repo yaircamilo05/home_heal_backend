@@ -17,7 +17,7 @@ app.version = "1.0"
 
 # Adicion de middlewares
 app.add_middleware(ErrorHandler)
-origins = ["*"]
+origins = ["https://home-heal-apiweb.azurewebsites.net", "http://localhost:8000"]
 app.add_middleware(
     CORSMiddleware, allow_origins=origins,
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
