@@ -1,6 +1,6 @@
 from models.base import User
-from schemas.user import UserCreate
-from schemas.user import User as UserGet
+from schemas.user import UserCreate, UserGet
+from schemas.user import User as UserSchema
 from models.base import User
 from utils import auth
 from constants.models import DEFAULT_IMG
@@ -10,8 +10,8 @@ def create_user(new_user: UserCreate, db):
     if exist:
         return None
     user = User(**new_user.model_dump())
-    if user.file_img == '' or user.file_img is None:
-        user.file_img = DEFAULT_IMG
+    if user.image_url == '' or user.image_url is None:
+        user.image_url = DEFAULT_IMG
 
     # Encriptation of the password
     user.password = auth.encript_password(user.password)
@@ -23,6 +23,7 @@ def create_user(new_user: UserCreate, db):
 
 
 def exist_user(email: str, db):
+    print(email)
     usr = db.query(User).filter(User.email == email).first()
     return usr
 
@@ -33,3 +34,25 @@ def all_users(db) -> list[UserGet]:
     for user in users:
         result.append(UserGet(**user.__dict__))
     return result
+
+
+def put_user(id: int, user: User, db):
+    db_user: User = db.query(User).filter(User.id == id).first()
+    if db_user is None:
+        return None
+    
+    for attr, value in user.model_dump().items():
+        setattr(db_user, attr, value)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def delete_user(id: int, db):
+    db_user: User = db.query(User).filter(User.id == id).first()
+    if db_user is None:
+        return None
+    db.delete(db_user)
+    db.commit()
+    return db_user
+

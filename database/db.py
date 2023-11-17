@@ -1,10 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
 
 
 Base = declarative_base()
-DATABASE_URL = "mssql+pyodbc://Luis0714:#Luis2003@estremor-server.database.windows.net:1433/estremor-test-db?driver=ODBC+Driver+18+for+SQL+Server"
+env = os.getenv("ENV","development")
+path = f'.env.{env}'
+dotenv_path = os.path.join('environments', path)
+load_dotenv(dotenv_path=dotenv_path)
+
+DATABASE_URL = os.getenv("DATABASE_CONECTION_STRING")
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

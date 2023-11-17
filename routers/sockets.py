@@ -1,6 +1,8 @@
 from fastapi.encoders import jsonable_encoder
 import socketio
 
+from schemas.socket import SocketClient
+
 socketio_server = socketio.AsyncServer(
     async_mode="asgi",
     cors_allowed_origins=[]
@@ -11,10 +13,18 @@ socketio_app = socketio.ASGIApp(
     socketio_path="sockets"
 )
 
+sockets = []
 @socketio_server.event
-async def connection(sid,environment,auth):
-    print("Nuevo usuario Conectado: ", sid)
-    await socketio_server.emit("join", {"Message": "Conectado al servidor Socket", "sid": sid})
+async def connect(sid,data):
+    print("Nuevo usuario Conectado: ", sockets)
+    await socketio_server.emit("connection", {"message": "Conectado al servidor Socket", "sid": sid})
+
+@socketio_server.event
+async def connection_sockect_client(sid,data):
+    room = data['room']
+    socket_client = {"sid": sid, "room": room}
+    sockets.append(socket_client)
+    print("Nuevo usuario Conectado: ", sockets)
 
 
 
@@ -22,7 +32,8 @@ async def connection(sid,environment,auth):
 async def sendmessage(sid, data):
     #guaradar el historioa de mensajes 
     #obtenr todos los mensajes del usuario
-    data["image_username"] = data["image_destinatario"]
+  
+    print("Mensaje enviado a: ", sockets)
     data["type"] = 2
     await socketio_server.emit("recivedmessage", jsonable_encoder(data), skip_sid=sid)
 
