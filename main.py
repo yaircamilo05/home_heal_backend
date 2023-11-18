@@ -23,7 +23,6 @@ CLIENT = os.getenv("CLIENT_URL")
 # Adicion de middlewares
 app.add_middleware(ErrorHandler)
 origins = [CLIENT]
-print("ORIGENES",CLIENT)
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros

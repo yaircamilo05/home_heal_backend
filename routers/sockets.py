@@ -16,15 +16,14 @@ socketio_app = socketio.ASGIApp(
 sockets = []
 @socketio_server.event
 async def connect(sid,data):
-    print("Nuevo usuario Conectado: ", sockets)
     await socketio_server.emit("connection", {"message": "Conectado al servidor Socket", "sid": sid})
 
-@socketio_server.event
-async def connection_sockect_client(sid,data):
-    room = data['room']
-    socket_client = {"sid": sid, "room": room}
-    sockets.append(socket_client)
-    print("Nuevo usuario Conectado: ", sockets)
+# @socketio_server.event
+# async def connection_sockect_client(sid,data):
+#     # room = data['room']
+#     # socket_client = {"sid": sid, "room": room}
+#     # sockets.append(socket_client)
+#     print("Nuevo usuario Conectado: ", sockets)
 
 
 
