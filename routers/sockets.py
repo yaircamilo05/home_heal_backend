@@ -5,7 +5,7 @@ from schemas.socket import SocketClient
 
 socketio_server = socketio.AsyncServer(
     async_mode="asgi",
-    cors_allowed_origins=['*']
+    cors_allowed_origins=[]
 )
 
 socketio_app = socketio.ASGIApp(

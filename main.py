@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
@@ -6,7 +7,6 @@ from middlewares.error import ErrorHandler
 from routers.sockets import socketio_app
 from database.db import Base, engine
 from routers import user, rol, account, menu, rol_menu, file, query, patient
-
 import uvicorn
 
 
@@ -14,11 +14,17 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "Home Heal API"
 app.version = "1.0"
+env = os.getenv("ENV","development")
+path = f'.env.{env}'
+dotenv_path = os.path.join('environments', path)
+load_dotenv(dotenv_path=dotenv_path)
 
+CLIENT = os.getenv("CLIENT_URL")
 # Adicion de middlewares
 app.add_middleware(ErrorHandler)
-origins = ["http://localhost:4200","https://home-heal-web.azurewebsites.net"]
-#app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+origins = [CLIENT]
+print("ORIGENES",CLIENT)
+app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
 
