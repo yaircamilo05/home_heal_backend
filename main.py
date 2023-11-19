@@ -13,6 +13,7 @@ import uvicorn
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "Home Heal API"
+app.description = "Remote medicine application for home care patients."
 app.version = "1.0"
 
 # Adicion de middlewares
@@ -36,6 +37,7 @@ app.include_router(menu.router, tags=["Menus"], prefix="/menu")
 app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 app.include_router(query.router, tags=["Queries"], prefix="/query")
 app.include_router(file.router, tags=["Files"], prefix="/file")
+# app.include_router(socket_tst.router, tags=["SOCKET_TST"], prefix="/socket")
 
 
 @app.get("/")

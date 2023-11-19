@@ -14,7 +14,17 @@ from services.rol import get_roles_with_menus, post_rol, exist_rol, get_roles, g
 router = APIRouter()
 
 
-@router.post('/role', response_model=RolOut)
+@router.post(
+    '/role', response_model=RolOut,
+    responses={
+        status.HTTP_201_CREATED: {'description': 'Successful Response', 'model': List[RolOut]},
+        status.HTTP_424_FAILED_DEPENDENCY: {'description': 'Rol already exists', 'model': List[RolOut]},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            'description': 'Internal Server Error', 'model': List[RolOut]}
+    },
+    summary="Create a new role",
+    description="# Create a new role with the name and description"
+)
 async def create_rol(rol: RolCreate, db: Session = Depends(get_db)) -> RolOut:
     rol_created: RolOut = post_rol(rol, db)
     if rol_created is None:

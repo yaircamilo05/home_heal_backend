@@ -3,7 +3,7 @@ from fastapi import UploadFile
 from azure.storage.blob import BlobServiceClient
 
 
-# Configura la conexión a Azure Blob Storage
+# Configuración la conexión a Azure Blob Storage
 connection_string = 'DefaultEndpointsProtocol=https;AccountName=imgblobstorage;AccountKey=yK62qR/KVNHLgIM+1BL5NZ+1oAHVQMDvmr/SoCL2DjPgoBU0CT/qfXFvAYAaIp45t6QsPy8ae+wS+AStwVsgdQ==;EndpointSuffix=core.windows.net'
 
 container_name = 'hh-user-images'
