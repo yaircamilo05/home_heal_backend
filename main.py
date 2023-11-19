@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
-from routers.sockets import socketio_app
+# from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user, rol, account, menu, rol_menu, file, query, patient
+from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector
 
 import uvicorn
 
@@ -34,13 +34,13 @@ app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 app.include_router(query.router, tags=["Queries"], prefix="/query")
 app.include_router(file.router, tags=["Files"], prefix="/file")
 app.include_router(patient.router, tags=["Patients"], prefix="/patient")
-
+app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to Home Heal server!"}
 
-app.mount("/", socketio_app)
+# app.mount("/", socketio_app)
 port = int(os.environ.get("PORT", 8000))
 
 if __name__ == "__main__":
