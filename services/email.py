@@ -1,10 +1,10 @@
 import os
-from schemas.email import EmailData
+from schemas.email import EmailData, EmailRegisterData
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 
-def send_email(data: EmailData):
+def send_email_register(data: EmailRegisterData):
     hash = data.hash
     if (hash == os.environ.get('HASH_VALIDATOR')):
         try:
@@ -16,14 +16,18 @@ def send_email(data: EmailData):
                 subject='Inicio de sesión',
                 html_content='<strong>Prueba notificaciones</strong>'
             )
+            
+            message.dynamic_template_data = {
+                'name': data.name,
+                'email': to,
+                'password': data.password
+            }
+            
+            message.template_id = os.environ.get('TEMPLATE_REGISTER')  
 
             try:
                 sg = SendGridAPIClient(os.getenv('HOME_HEAL_API_SENDGRID'))
-                print(sg.api_key)
                 response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
                 return "ok"
             except Exception as e:
                 return str(e)
