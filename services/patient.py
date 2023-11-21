@@ -42,7 +42,8 @@ def create_user_patient(user: UserRegister, image_file:UploadFile,db) -> int:
         password = user.password,
         phone = user.phone,
         cc = user.cc,
-        rol_id = 2
+        rol_id = 2,
+        specialty=''
     )
     
     new_user = create_user(user_create,db)
