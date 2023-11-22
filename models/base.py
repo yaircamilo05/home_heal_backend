@@ -40,7 +40,6 @@ class User(Base):
     rol_id = Column(Integer, ForeignKey('roles.id'))
     rol = relationship('Rol', back_populates='users')
 
-
 class Rol(Base):
     __tablename__ = 'roles'
     id = Column(Integer, primary_key=True, autoincrement=True)
