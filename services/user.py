@@ -21,7 +21,6 @@ def create_user(new_user: UserCreate, db):
     
     user = User(**user_aux.model_dump())
   
-   
     if user.image_url == '' or user.image_url is None:
         user.image_url = DEFAULT_IMG
 
@@ -45,6 +44,7 @@ def create_user(new_user: UserCreate, db):
             db.delete(user)
             db.commit()
             return None
+    
     return instance_to_dict(user)
 
 def instance_to_dict(instance):
