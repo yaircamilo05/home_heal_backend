@@ -16,7 +16,7 @@ from services.vital_signs import (
 router = APIRouter()
 
 
-@router.get('/vital_signs/', response_model=List[VitalSignsResponse])
+@router.get('/all/', response_model=List[VitalSignsResponse])
 async def get_vital_signs(db: Session = Depends(get_db)):
     vital_sign, code = read_vital_signs(db)
     if code == status.HTTP_204_NO_CONTENT:
@@ -35,7 +35,7 @@ async def get_vital_signs(db: Session = Depends(get_db)):
     )
 
 
-@router.post('/vital_signs/', response_model=VitalSignsResponse)
+@router.post('/post/', response_model=VitalSignsResponse)
 async def post_vital_sign(patient_id: int, vital_sign: VitalSignsCreate, db: Session = Depends(get_db)):
     vital_sign_created, code = create_vital_sign(db, patient_id, vital_sign)
     if code == status.HTTP_404_NOT_FOUND:
@@ -49,7 +49,7 @@ async def post_vital_sign(patient_id: int, vital_sign: VitalSignsCreate, db: Ses
     )
 
 
-@router.get('/vital_signs/{vital_sign_id}', response_model=VitalSignsResponse)
+@router.get('/get_id/{vital_sign_id}', response_model=VitalSignsResponse)
 async def get_vital_sign(vital_sign_id: int, db: Session = Depends(get_db)):
     vital_sign, code = read_vital_sign(db, vital_sign_id)
     if code == status.HTTP_404_NOT_FOUND:
@@ -63,7 +63,7 @@ async def get_vital_sign(vital_sign_id: int, db: Session = Depends(get_db)):
     )
 
 
-@router.put('/vital_signs/{patient_id}', response_model=VitalSignsResponse)
+@router.put('/put/{patient_id}', response_model=VitalSignsResponse)
 async def put_vital_sign(patient_id: int, vital_sign: VitalSignsUpdate, db: Session = Depends(get_db)):
     vital_sign_updated, code = replace_vital_signs(db, patient_id, vital_sign)
     if code == status.HTTP_404_NOT_FOUND:
@@ -77,7 +77,7 @@ async def put_vital_sign(patient_id: int, vital_sign: VitalSignsUpdate, db: Sess
     )
 
 
-@router.delete('/vital_signs/{vital_sign_id}')
+@router.delete('/delete/{vital_sign_id}')
 async def delete_vital_sign(vital_sign_id: int, db: Session = Depends(get_db)):
     _, code = remove_vital_sign(db, vital_sign_id)
     if code == status.HTTP_404_NOT_FOUND:

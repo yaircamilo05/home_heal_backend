@@ -12,7 +12,7 @@ dotenv_path = os.path.join('environments', path)
 load_dotenv(dotenv_path=dotenv_path)
 
 DATABASE_URL = os.getenv("DATABASE_CONECTION_STRING")
-engine = create_engine(DATABASE_URL, echo=True, future=True)
+engine = create_engine(DATABASE_URL, echo=True, future=True, implicit_returning=False)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

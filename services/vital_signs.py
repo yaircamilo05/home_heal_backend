@@ -14,8 +14,9 @@ def read_vital_signs(db: Session):
     return [VitalSignsResponse(**vs.__dict__) for vs in vitals], status.HTTP_200_OK
 
 
-def create_vital_sign(db: Session, patient_id:int, vital_sign: VitalSignsCreate):
-    db_vital_sign: VitalSigns = VitalSigns(**vital_sign.model_dump(), patient_id=patient_id)
+def create_vital_sign(db: Session, patient_id: int, vital_sign: VitalSignsCreate):
+    db_vital_sign: VitalSigns = VitalSigns(
+        **vital_sign.model_dump(), patient_id=patient_id)
     db.add(db_vital_sign)
     db.commit()
     db.refresh(db_vital_sign)
@@ -41,7 +42,7 @@ def replace_vital_signs(db: Session, patient_id: int, new_vs: VitalSignsUpdate):
     db_vs.O2_saturation = new_vs.O2_saturation
     db_vs.blood_pressure = new_vs.blood_pressure
     db_vs.hearth_rate = new_vs.hearth_rate
-    db_vs.created_at = new_vs.created_at
+
     db.commit()
     return VitalSignsResponse(**db_vs.__dict__), status.HTTP_200_OK
 
