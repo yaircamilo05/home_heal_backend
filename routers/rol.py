@@ -43,12 +43,15 @@ async def read_roles(db: Session = Depends(get_db)) -> List[RolOut]:
         content={'data': jsonable_encoder(roles)}
     )
 
+
 @router.get('/roles_with_menus', response_model=List[RolWithMenus])
 async def read_roles(db: Session = Depends(get_db)):
-    roles_with_menus =  get_roles_with_menus(db)
+    roles_with_menus = get_roles_with_menus(db)
     if roles_with_menus is None:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "No hay roles"})
-    return JSONResponse(status_code=status.HTTP_200_OK, content={ "data":jsonable_encoder(roles_with_menus)})
+        raise HTTPException(
+            status_code=404, detail=f'Rol not found'
+        )
+    return JSONResponse(status_code=200, content={"data": jsonable_encoder(roles_with_menus)})
 
 
 @router.get('/role/{id}', response_model=RolOut)
@@ -69,7 +72,6 @@ async def read_rol(id: int, db: Session = Depends(get_db)) -> RolOut:
 
 @router.put('/role/{id}', response_model=RolOut)
 async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) -> RolOut:
-    print(rol)
     rol_updated: RolOut = put_rol(id, rol, db)
     if rol_updated is None:
         raise HTTPException(
@@ -85,7 +87,7 @@ async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) ->
 
 @router.delete('/role/{id}')
 async def remove_role(id: int, db: Session = Depends(get_db)) -> bool:
-    rol_removed: RolOut = delete_rol(id, db)
+    rol_removed: bool = delete_rol(id, db)
     if rol_removed:
         return JSONResponse(
             status_code=status.HTTP_200_OK,

@@ -22,7 +22,6 @@ async def connection(sid,environment,auth):
 async def sendmessage(sid, data):
     #guaradar el historioa de mensajes 
     #obtenr todos los mensajes del usuario
-    data["image_username"] = data["image_destinatario"]
     data["type"] = 2
     await socketio_server.emit("recivedmessage", jsonable_encoder(data), skip_sid=sid)
 

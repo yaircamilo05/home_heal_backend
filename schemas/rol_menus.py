@@ -12,3 +12,7 @@ class MenuWithRoles(MenuOut):
 class RolMenuSchema(BaseModel):
     rol: RolWithMenus
     menu: MenuWithRoles
+
+class RolMenuIds(BaseModel):
+    rol_id: int
+    menu_id: int
