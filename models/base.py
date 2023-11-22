@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Table, Column, Integer, String, Date, DateTime, func, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
 
@@ -51,7 +51,6 @@ class Rol(Base):
     menus = relationship('Menu', secondary=rol_menus, back_populates='roles')
 
 
-
 class Patient(Base):
     __tablename__ = 'patients'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -60,13 +59,16 @@ class Patient(Base):
     birthdate = Column(Date)
     description = Column(String(255))
     address = Column(String(255))
-    
+
     user_id = Column(Integer, ForeignKey('users.id'))
     familiar_user_id = Column(Integer, ForeignKey('users.id'))
 
-    doctors = relationship('Doctor', secondary=DoctorPatients, back_populates='patients')
-    vital_signs = relationship('VitalSign', back_populates='patient', uselist=False)
-    vital_sign_records = relationship('VitalSignRecord', back_populates='patient')
+    doctors = relationship(
+        'Doctor', secondary=DoctorPatients, back_populates='patients')
+    vital_signs = relationship(
+        'VitalSigns', back_populates='patient', uselist=False)
+    vital_signs_records = relationship(
+        'VitalSignRecord', back_populates='patient')
     diagnostics = relationship('Diagnostic', back_populates='patient')
 
 
@@ -75,10 +77,11 @@ class Doctor(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     speciality = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
-    patients = relationship('Patient', secondary=DoctorPatients, back_populates='doctors')
+    patients = relationship(
+        'Patient', secondary=DoctorPatients, back_populates='doctors')
 
 
-class VitalSign(Base):
+class VitalSigns(Base):
     __tablename__ = 'vital_signs'
     id = Column(Integer, primary_key=True, autoincrement=True)
 
@@ -91,15 +94,16 @@ class VitalSign(Base):
 
 
 class VitalSignRecord(Base):
-    __tablename__ = 'vital_sign_records'
+    __tablename__ = 'vital_signs_records'
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     hearth_rate = Column(Integer)
     blood_pressure = Column(Integer)
     O2_saturation = Column(Integer)
+    date: Date = Column(DateTime(timezone=True), server_default=func.now())
 
     patient_id = Column(Integer, ForeignKey('patients.id'))
-    patient = relationship('Patient', back_populates='vital_sign_records')
+    patient = relationship('Patient', back_populates='vital_signs_records')
 
 
 class Cares(Base):
@@ -107,7 +111,6 @@ class Cares(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String(255))
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
-
 
 
 class Appointment(Base):
@@ -119,7 +122,6 @@ class Appointment(Base):
     state = Column(String(15))
 
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
-    
 
 
 class Diagnostic(Base):
