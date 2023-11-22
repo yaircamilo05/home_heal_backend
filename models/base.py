@@ -97,6 +97,7 @@ class VitalSignRecord(Base):
     hearth_rate = Column(Integer)
     blood_pressure = Column(Integer)
     O2_saturation = Column(Integer)
+    date = Column(String)
 
     patient_id = Column(Integer, ForeignKey('patients.id'))
     patient = relationship('Patient', back_populates='vital_sign_records')

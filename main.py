@@ -3,9 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
-# from routers.sockets import socketio_app
 from database.db import Base, engine
-from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector
+from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector, vital_signs
 
 import uvicorn
 
@@ -29,6 +28,7 @@ app.add_middleware(
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
 app.include_router(user.router, tags=["Users"], prefix="/user")
 app.include_router(rol.router, tags=["Roles"], prefix="/rol")
+app.include_router(vital_signs.router, tags=["Vitals Signs"], prefix="/vitalsigns")
 app.include_router(menu.router, tags=["Menus"], prefix="/menu")
 app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 app.include_router(query.router, tags=["Queries"], prefix="/query")
