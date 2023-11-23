@@ -1,5 +1,6 @@
 #service
 from fastapi import UploadFile
+from services.vital_signs import create_vital_signs_default_patient
 from constants.models import DEFAULT_IMG
 from models.base import Patient, User
 from schemas.patient import PatientOut
@@ -24,8 +25,12 @@ def register_user(user: UserRegister, image_file: UploadFile, db) -> Patient:
     user_patient_id = create_user_patient(user,image_file,db)
     user_familiar_id = create_user_familiar(user,db)
    
+   
     if user_patient_id and user_familiar_id:
-        return create_patient(user,user_patient_id,user_familiar_id,db)
+        patient = create_patient(user,user_patient_id,user_familiar_id,db)
+        if patient:
+            create_vital_signs_default_patient(patient.id,db)
+    return patient
     
     return None
 
@@ -42,15 +47,17 @@ def create_user_patient(user: UserRegister, image_file:UploadFile,db) -> int:
         password = user.password,
         phone = user.phone,
         cc = user.cc,
-        rol_id = 2
+        rol_id = 2,
+        specialty = ''
     )
     
     new_user = create_user(user_create,db)
-    new_user_id = new_user.id
+    new_user_id = new_user.get('id')
     return new_user_id
 
 #Create user to familiar
 def create_user_familiar(user: UserRegister,db) -> int:
+    print('problema aqui')
     user_create = UserCreate(
         name = user.familiar_name,
         lastname = user.familiar_lastname,
@@ -59,10 +66,11 @@ def create_user_familiar(user: UserRegister,db) -> int:
         password = user.password,
         phone = user.familiar_phone,
         cc = '',
-        rol_id = 3
+        rol_id = 3,
+        specialty = ''
     )
     new_user = create_user(user_create,db)
-    new_user_id = new_user.id
+    new_user_id = new_user.get('id')
     return new_user_id
 
 #Create patient whit user_patient_id and user_familiar_id
@@ -83,6 +91,7 @@ def create_patient(user: UserRegister, user_familiar_id: int, user_pacient_id: i
     db.commit()
     db.refresh(patient)
     return patient
+
 
 #Get all patients
 def all_patients(db) -> list[PatientGet]:

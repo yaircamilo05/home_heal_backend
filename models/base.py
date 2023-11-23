@@ -40,7 +40,6 @@ class User(Base):
     rol_id = Column(Integer, ForeignKey('roles.id'))
     rol = relationship('Rol', back_populates='users')
 
-
 class Rol(Base):
     __tablename__ = 'roles'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -97,6 +96,7 @@ class VitalSignRecord(Base):
     hearth_rate = Column(Integer)
     blood_pressure = Column(Integer)
     O2_saturation = Column(Integer)
+    date = Column(String)
 
     patient_id = Column(Integer, ForeignKey('patients.id'))
     patient = relationship('Patient', back_populates='vital_sign_records')
