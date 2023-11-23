@@ -1,5 +1,6 @@
 #service
-from fastapi import UploadFile
+from typing import List
+from fastapi import HTTPException, UploadFile
 from services.vital_signs import create_vital_signs_default_patient
 from constants.models import DEFAULT_IMG
 from models.base import Patient, User
@@ -93,10 +94,22 @@ def create_patient(user: UserRegister, user_familiar_id: int, user_pacient_id: i
     return patient
 
 
-#Get all patients
-def all_patients(db) -> list[PatientGet]:
+def all_patients(db) -> List[PatientGet]:
     result = []
-    patients = db.query(Patient).all();
+    patients = db.query(Patient).all()
     for patient in patients:
-        result.append(PatientGet(**Patient.__dict__))
+        try:
+            patient_get = PatientGet(
+                gender=patient.gender,
+                birthdate=patient.birthdate,
+                description=patient.description,
+                address=patient.address,
+                user_id=patient.user_id,
+                familiar_user_id=patient.familiar_user_id
+            )
+            result.append(patient_get)
+        except Exception as e:
+            # Manejar cualquier error que pueda ocurrir al crear la instancia
+            raise HTTPException(status_code=500, detail=f"Error al procesar paciente: {str(e)}")
+
     return result
