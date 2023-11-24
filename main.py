@@ -5,7 +5,7 @@ from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
 from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector, vital_signs
-from routers import user, rol, account, menu, rol_menu, file, query, patient, email
+from routers import user, rol, account, menu, rol_menu, file, query, patient, email, doctor
 
 import uvicorn
 
@@ -34,6 +34,7 @@ app.include_router(menu.router, tags=["Menus"], prefix="/menu")
 app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
 app.include_router(query.router, tags=["Queries"], prefix="/query")
 app.include_router(file.router, tags=["Files"], prefix="/file")
+app.include_router(doctor.router, tags=["doctors"], prefix="/doctor")
 app.include_router(patient.router, tags=["Patients"], prefix="/patient")
 app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
 app.include_router(email.router, tags=["Emails"], prefix="/email")
