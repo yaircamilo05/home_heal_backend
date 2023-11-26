@@ -32,6 +32,8 @@ class GetAppointmentByDoctorIdByUser(BaseModel):
     patient_name: str
     doctor_id: int
     patient_id: int
+    patient_photo: str
+    doctor_photo: str
 
     class Config:
         orm_mode = True

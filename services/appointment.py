@@ -33,6 +33,8 @@ def get_appointments_by_user_id(db: Session, user_id: int):
                 DoctorUser.name.label("DoctorName"),
                 DoctorUser.id.label("DoctorId"),
                 PatientUser.id.label("PatientId"),
+                PatientUser.image_url.label("PatientPhoto"),
+                DoctorUser.image_url.label("DoctorPhoto")
             )
             .select_from(Appointment)
             .join(DoctorPatients)
@@ -53,6 +55,8 @@ def get_appointments_by_user_id(db: Session, user_id: int):
             "patient_name": row.PatientName,
             "doctor_name": row.DoctorName,
             "doctor_id": row.DoctorId,
-            "patient_id": row.PatientId
+            "patient_id": row.PatientId,
+            "patient_photo": row.PatientPhoto,
+            "doctor_photo": row.DoctorPhoto
         })
     return lista
