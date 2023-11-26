@@ -119,7 +119,6 @@ class Appointment(Base):
     state = Column(String(15))
 
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
-    
 
 
 class Diagnostic(Base):

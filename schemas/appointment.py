@@ -22,3 +22,16 @@ class AppointmentSchemaIn(AppointmentSchema):
             "status": self.status,
             "doctor_patient_id": self.doctor_patient_id
         }
+    
+class GetAppointmentByDoctorIdByUser(BaseModel):
+    id: int
+    reason: str
+    date: str
+    state: str
+    doctor_name: str
+    patient_name: str
+    doctor_id: int
+    patient_id: int
+
+    class Config:
+        orm_mode = True
