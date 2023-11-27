@@ -7,7 +7,6 @@ from constants.models import DEFAULT_IMG
 
 
 class User(BaseModel):
-    ##id: int
     name: str
     lastname: str
     email: str
@@ -16,10 +15,12 @@ class User(BaseModel):
     cc: str
     phone: str
 
+class UserGetLogin(User):
+    id: int
+
 
 class UserCreate(User):
     password: str
-    specialty: str
 
 
 class UserWithMenus(MenuOut):

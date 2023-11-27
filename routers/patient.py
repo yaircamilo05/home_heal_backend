@@ -5,9 +5,8 @@ from fastapi.responses import JSONResponse
 from pydantic import parse_obj_as
 from requests import Session
 from database.db import get_db
-
 from schemas.patient import UserRegister, PatientOut
-from services.patient import all_patients, register_user
+from services.patient import all_patients, register_user, get_patients_by_doctor_id
 
 
 router = APIRouter()
@@ -29,3 +28,11 @@ def get_all_patients(db: Session = Depends(get_db)):
     if not patients:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"data": patients, "message": "No hay pacientes"})
     return  JSONResponse(status_code=status.HTTP_201_CREATED, content={"data":jsonable_encoder(patients)})
+
+@router.get("/get_patients_by_doctor_id/{doctor_id}")
+def get_patients_by_doctor(doctor_id: int, db: Session = Depends(get_db)):
+    patients =  get_patients_by_doctor_id(doctor_id,db)
+    print("Patients ROUTER",patients)
+    if not patients:
+        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"data": jsonable_encoder(patients)})
+    return  JSONResponse(status_code=status.HTTP_200_OK, content={"data":jsonable_encoder(patients)})

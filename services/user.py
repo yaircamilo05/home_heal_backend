@@ -1,8 +1,8 @@
 from models.base import User, Doctor
 from schemas.user import UserCreate, UserGet, UserAux, UserUpdate
-from schemas.doctor import Doctor as DoctorSchema
+from schemas.doctor import DoctorBase as DoctorSchema
 from schemas.user import User as UserSchema
-from services.doctor import create_doctor, get_doctor_by_user_id, put_doctor
+from services.doctor import get_doctor_by_user_id, put_doctor
 from schemas.rol import RolOut
 from models.base import User, Rol
 from utils import auth
@@ -12,14 +12,11 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy import select
 
 def create_user(new_user: UserCreate, db):
-    print('llegue a crear usuario')
     exist = exist_user(new_user.email, db)
     if exist:
         return None
     
-    user_aux = UserAux(**new_user.__dict__)
-    
-    user = User(**user_aux.model_dump())
+    user = User(**new_user.__dict__)
   
     if user.image_url == '' or user.image_url is None:
         user.image_url = DEFAULT_IMG
@@ -27,28 +24,13 @@ def create_user(new_user: UserCreate, db):
     # Encriptation of the password
     user.password = auth.encript_password(user.password)
     ## Acá va la logica de consulta en la base de datos
-
-    
     db.add(user)
     db.commit()
     db.refresh(user)
-    
-    if new_user.specialty != '':
-        print('Entre a la creacion del doctor')
-        
-        print(user.id)
-        doctor = DoctorSchema(speciality=new_user.specialty, user_id=user.id)
-        
-        doctor_bd=create_doctor(doctor, db)
-        if doctor_bd is None:
-            db.delete(user)
-            db.commit()
-            return None
-    
-    return instance_to_dict(user)
 
-def instance_to_dict(instance):
-    return {c.key: getattr(instance, c.key) for c in inspect(instance).mapper.column_attrs}
+    return user
+
+
 
 def exist_user(email: str, db):
     print(email)
@@ -72,6 +54,8 @@ def all_users(db) -> list[UserGet]:
             continue
     return result
 
+def instance_to_dict(instance):
+    return {c.key: getattr(instance, c.key) for c in inspect(instance).mapper.column_attrs}
 
 def put_user(id: int, user: UserCreate, db):
     print('entre a la modificacion del usuario')
