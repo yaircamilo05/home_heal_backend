@@ -1,7 +1,7 @@
 from models.base import User
 from schemas.user import UserGetLogin 
 from services.rol import get_role
-from utils import auth, jwt
+from utils import auth, jwt as jwt
 from schemas.login import credentials_login
 from services.rol_menu import get_menus_role
 from fastapi.encoders import jsonable_encoder

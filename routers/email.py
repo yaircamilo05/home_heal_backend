@@ -25,3 +25,4 @@ def send_vital_signs_email(data: EmailVitalSignsData):
     if response == "ko":
          return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Error al enviar el email"})
     return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"message": "Email enviado correctamente"})
+
