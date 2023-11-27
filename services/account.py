@@ -1,5 +1,5 @@
 from models.base import User
-from schemas.user import User as UserGet
+from schemas.user import UserGetLogin
 from services.rol import get_role
 from utils import auth, jwt
 from schemas.login import credentials_login
@@ -12,7 +12,7 @@ def login(credentials: credentials_login, db) -> str:
         return None
     user = get_user_by_email(credentials.email, db)
     if user and auth.check_password(credentials.password, user.password):
-        user_get = UserGet(**user.__dict__)
+        user_get = UserGetLogin(**user.__dict__)
         token = jwt.create_token(user_get)
     return token
 
