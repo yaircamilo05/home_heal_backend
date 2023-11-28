@@ -5,8 +5,12 @@ from sqlalchemy import Date
 class AppointmentSchema(BaseModel):
     reason: str
     date: str
-    state: str
     doctor_patients_id: int
+    
+class AppointmentRegister(BaseModel):
+    reason: str
+    date: str
+    speciality: str
     
 class AppointmentOut(AppointmentSchema):
     id: int

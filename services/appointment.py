@@ -2,14 +2,18 @@ from datetime import datetime
 from sqlalchemy import AliasedReturnsRows, or_, select
 from sqlalchemy.orm import Session
 from models.base import Appointment, Doctor, DoctorPatients, Patient, User
-from schemas.appointment import AppointmentOut, AppointmentSchema, GetAppointmentByDoctorIdByUser
+from schemas.appointment import AppointmentOut, AppointmentRegister, AppointmentSchema, GetAppointmentByDoctorIdByUser
 from typing import List
 from sqlalchemy.orm import aliased
 from sqlalchemy import Date
 
-def post_appointment(db: Session, appointment: AppointmentSchema):
+def post_appointment(db: Session, appointment: AppointmentRegister):
+    print(appointment)
+    
+def create_appointment(db: Session, appointment: AppointmentSchema):
     appointment_dict = appointment.model_dump()
-    appointment_dict["date"] = datetime.strptime(appointment_dict["date"], "%Y-%m-%d").date()
+    appointment_dict["date"] = datetime.strptime(appointment_dict["date"], "%Y-%m-%d %H:%M:%S")
+    appointment_dict["state"] = "PENDIENTE"
     db_appointment = Appointment(**appointment_dict)
     db.add(db_appointment)
     db.commit()

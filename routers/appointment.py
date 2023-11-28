@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database.db import get_db
 from schemas.appointment import AppointmentOut, AppointmentSchema, GetAppointmentByDoctorIdByUser
-from services.appointment import get_appointments, get_appointments_by_user_id, post_appointment
+from services.appointment import get_appointments, get_appointments_by_user_id, create_appointment
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -25,7 +25,7 @@ def read_appointments_by_doctor_patient_id(userId: int, db: Session = Depends(ge
 
 @router.post("/post_appointments")
 def create_appointment(appointment: AppointmentSchema, db: Session = Depends(get_db)):
-    schemaAppointment = post_appointment(db, appointment)
+    schemaAppointment = create_appointment(db, appointment)
     if schemaAppointment is None:
         raise HTTPException(status_code=404, detail="Appointment already exists")
     return JSONResponse(status_code=200, content=jsonable_encoder({"data": schemaAppointment}))
