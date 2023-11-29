@@ -26,4 +26,9 @@ class EmailVitalSignsData(BaseModel):
     o2_saturation: int
     state_o2_saturation: str
     color_o2_saturation: str
+
+class EmailLinkData(EmailData):
+    link: str
+
+
     

@@ -31,7 +31,9 @@ class UserRegister(BaseModel):
 class PatientCard(BaseModel):
     patient_id: int
     name:str
+    lastname:str
     cc:str
+    email: str
     phone:str
     address:str
     age:int

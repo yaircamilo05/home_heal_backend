@@ -62,3 +62,6 @@ class UserAux(BaseModel):
 
 class UserUpdate(User):
     specialty: str
+
+class RecoveryPassword(BaseModel):
+    email: str
