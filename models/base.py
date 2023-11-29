@@ -107,6 +107,8 @@ class Cares(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String(255))
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
+    doctor=relationship('Doctor', secondary=DoctorPatients,back_populates='doctors')
+    patient=relationship('Patient', secondary=DoctorPatients,back_populates='patients')
 
 
 
