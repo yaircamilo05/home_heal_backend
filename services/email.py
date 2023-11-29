@@ -1,5 +1,5 @@
 import os
-from schemas.email import EmailData, EmailRegisterData, EmailVitalSignsData
+from schemas.email import EmailData, EmailRegisterData, EmailVitalSignsData, EmailLinkData
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -105,3 +105,28 @@ def send_email_vital_signs(data: EmailVitalSignsData):
             return "ko"
     else:
         return "ko"
+    
+def send_link_email_recory_password(data:EmailLinkData):
+    hash = data.hash
+    if (hash == os.environ.get('HASH_VALIDATOR')):
+        try:
+            email_sender = os.environ.get("EMAIL_SENDER")
+            to = data.to_destination
+            message = Mail(
+                from_email=email_sender,
+                to_emails=to,
+                subject='Prueba Recuperación de contraseña',
+                html_content=f'<strong>Link para recuperar contraseña: </strong><a href="{data.link}">Click aquí</a>'
+            )
+
+            try:
+                sg = SendGridAPIClient(os.getenv('HOME_HEAL_API_SENDGRID'))
+                response = sg.send(message)
+                return "ok"
+            except Exception as e:
+                return "ko"
+        except Exception as e:
+            return "ko"
+    else:
+        return "ko"
+

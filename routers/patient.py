@@ -6,7 +6,7 @@ from pydantic import parse_obj_as
 from requests import Session
 from database.db import get_db
 from schemas.patient import UserRegister, PatientOut
-from services.patient import all_patients, register_user, get_patients_by_doctor_id
+from services.patient import all_patients, get_patient, register_user, get_patients_by_doctor_id
 
 
 router = APIRouter()
@@ -36,3 +36,10 @@ def get_patients_by_doctor(doctor_id: int, db: Session = Depends(get_db)):
     if not patients:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"data": jsonable_encoder(patients)})
     return  JSONResponse(status_code=status.HTTP_200_OK, content={"data":jsonable_encoder(patients)})
+
+@router.get('/get_patient_by_id/{patient_id}')
+def get_patient_by_id(patient_id: int, db: Session = Depends(get_db)):
+    patient = get_patient(patient_id,db)
+    if patient is None:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "No se encontró el paciente"})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patient)})

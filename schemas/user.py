@@ -38,6 +38,16 @@ class UserGet(BaseModel):
     phone: str
     specialty: str
 
+class UserGetLogin(BaseModel):
+    id: int
+    name: str
+    lastname: str
+    email: str
+    image_url: str
+    rol_id: int
+    cc: str
+    phone: str
+
 
 class UserAux(BaseModel):
     name: str
@@ -52,3 +62,6 @@ class UserAux(BaseModel):
 
 class UserUpdate(User):
     specialty: str
+
+class RecoveryPassword(BaseModel):
+    email: str

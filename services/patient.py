@@ -117,8 +117,10 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
         select(
         Patient.id,
         User.name,
+        User.lastname,
         User.cc,
         User.phone,
+        User.email,
         User.image_url,
         Patient.gender,
         Patient.birthdate,
@@ -139,7 +141,9 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
         patient_card = PatientCard(
             patient_id=row.id,
             name=row.name,
+            lastname=row.lastname,
             cc=row.cc,
+            email=row.email,
             phone=row.phone,
             address=row.address,
             age = calculate_age_by_birthdate(row.birthdate),
@@ -158,3 +162,32 @@ def calculate_age_by_birthdate(birthdate):
     age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
     return age
 
+def get_patient(patient_id,db) -> PatientCard:
+    query = (select(Patient.id,
+                    User.name,
+                    User.lastname,
+                    User.cc,
+                    User.phone,
+                    User.email,
+                    User.image_url,
+                    Patient.gender,
+                    Patient.birthdate,
+                    Patient.address)
+            .select_from(Patient)
+            .join(User, User.id == Patient.user_id)
+            .where(Patient.id == patient_id))
+    result = db.execute(query)
+    row = result.fetchone()
+    patient_card = PatientCard(
+            patient_id=row.id,
+            name=row.name,
+            lastname=row.lastname,
+            cc=row.cc,
+            email=row.email,
+            phone=row.phone,
+            address=row.address,
+            age = calculate_age_by_birthdate(row.birthdate),
+            gender = row.gender,
+            img_url=row.image_url,
+            status= 1)
+    return patient_card

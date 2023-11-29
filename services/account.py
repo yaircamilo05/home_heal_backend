@@ -1,5 +1,9 @@
+import os
+from constants.models import URL_CHAGUE_PASSWORD
 from models.base import User
-from schemas.user import UserGetLogin 
+from schemas.email import EmailLinkData
+from schemas.user import RecoveryPassword, UserGetLogin
+from services.email import send_link_email_recory_password
 from services.rol import get_role
 from utils import auth, jwt as jwt
 from schemas.login import credentials_login
@@ -37,3 +41,29 @@ def exit_user(email: str, db) -> bool:
 def get_user_by_email(email: str, db) -> User:
     user = db.query(User).filter(User.email == email).first()
     return user
+
+def recovery_password(data: RecoveryPassword, db) -> str:
+    if not exit_user(data.email, db):
+        return False
+    user = get_user_by_email(data.email, db)
+    user_get = UserGetLogin(**user.__dict__)
+    token = jwt.create_token_email(user_get)
+    #Enviar el email con el link de recuperacion
+    content_email = f"{URL_CHAGUE_PASSWORD}?token={token}"
+    data_email:EmailLinkData = EmailLinkData(
+        hash=os.environ.get('HASH_VALIDATOR'),
+        to_destination=user.email,
+        name=user.name,
+        link=content_email
+    )
+    response = send_link_email_recory_password(data_email)
+    return response == "ok"
+
+def change_password(token: str, password: str, db) -> bool:
+    if not jwt.validate_token(token):
+        return False
+    user = jwt.validate_token(token)
+    user = get_user_by_email(user['email'], db)
+    user.password = auth.encript_password(password)
+    db.commit()
+    return True
