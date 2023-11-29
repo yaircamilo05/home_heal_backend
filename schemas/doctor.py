@@ -1,9 +1,18 @@
 from pydantic import BaseModel
 from .user import User
 
-class Doctor(BaseModel):
+class DoctorBase(BaseModel):
     speciality: str
     user_id: int
 
-class DoctorWithUser(Doctor):
-    user: User
+class DoctorCreate(BaseModel):
+    name: str
+    lastname: str
+    email: str
+    image_url: str
+    rol_id: int
+    cc: str
+    phone: str
+    password: str
+    specialty: str
+
