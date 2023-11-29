@@ -16,3 +16,6 @@ class DoctorCreate(BaseModel):
     password: str
     specialty: str
 
+class DoctorWithUser(DoctorBase):
+    user: User
+
