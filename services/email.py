@@ -1,5 +1,5 @@
 import os
-from schemas.email import EmailData, EmailRegisterData, EmailVitalSignsData, EmailLinkData
+from schemas.email import EmailRegisterData, EmailVitalSignsData, EmailLinkData
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -115,9 +115,14 @@ def send_link_email_recory_password(data:EmailLinkData):
             message = Mail(
                 from_email=email_sender,
                 to_emails=to,
-                subject='Prueba Recuperación de contraseña',
-                html_content=f'<strong>Link para recuperar contraseña: </strong><a href="{data.link}">Click aquí</a>'
             )
+            
+            message.dynamic_template_data = {
+                'name': data.name,
+                'link': data.link
+            }
+            
+            message.template_id = os.environ.get('TEMPLATE_LINK_RECOVERY_PASSWORD')
 
             try:
                 sg = SendGridAPIClient(os.getenv('HOME_HEAL_API_SENDGRID'))
