@@ -17,7 +17,7 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Error al crear el usuario"}
         )
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data":jsonable_encoder(User(**new_user))})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data":jsonable_encoder(User(**new_user.__dict__))})
 
 
 @router.get("/get_all_users", response_model=list[UserGet])

@@ -1,7 +1,6 @@
 from models.base import User, Doctor
 from schemas.user import UserCreate, UserGet, UserAux, UserUpdate
 from schemas.doctor import DoctorBase as DoctorSchema
-from schemas.user import User as UserSchema
 from services.doctor import get_doctor_by_user_id, put_doctor
 from schemas.rol import RolOut
 from models.base import User, Rol
@@ -16,6 +15,7 @@ def create_user(new_user: UserCreate, db):
     if exist:
         return None
     
+    print(new_user)
     user = User(**new_user.__dict__)
   
     if user.image_url == '' or user.image_url is None:

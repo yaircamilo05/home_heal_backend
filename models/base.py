@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import DateTime, Table, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
 
@@ -115,7 +115,7 @@ class Appointment(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     reason = Column(String(255))
-    date = Column(Date)
+    date = Column(DateTime) ##cambio de date a datetime
     state = Column(String(15))
 
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))

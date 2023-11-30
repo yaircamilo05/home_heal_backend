@@ -5,7 +5,7 @@ from schemas.email import EmailLinkData
 from schemas.user import RecoveryPassword, UserGetLogin
 from services.email import send_link_email_recory_password
 from services.rol import get_role
-from utils import auth, jwt
+from utils import auth, jwt as jwt
 from schemas.login import credentials_login
 from services.rol_menu import get_menus_role
 from fastapi.encoders import jsonable_encoder
