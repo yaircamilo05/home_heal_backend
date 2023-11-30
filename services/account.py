@@ -69,4 +69,4 @@ def change_password(token: str, password: str, db):
     user = get_user_by_email(user['email'], db)
     user.password = auth.encript_password(password)
     db.commit()
-    return  {"data":True, "message":"OK"}
+    return  {"data":True, "message":"OK", "email":user.email, "name":user.name, "password":password}
