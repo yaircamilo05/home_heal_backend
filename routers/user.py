@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.post("/create_user", response_model=User)
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = create_user(user, db)
+    new_user = create_user(user, db) 
     if not new_user:
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Error al crear el usuario"}
@@ -29,11 +29,11 @@ def get_all_users(db: Session = Depends(get_db)):
 
 
 @router.put("/edit_user/{user_id}", response_model=User)
-def edit_user(user_id:int, user: User, db: Session = Depends(get_db)):
+def edit_user(user_id:int, user: UserCreate, db: Session = Depends(get_db)):
     db_user = put_user(user_id, user, db)
     if db_user is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Usuario no encontrado"})
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(User(**db_user.__dict__))})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(User(**db_user))})
 
 
 @router.delete("/delete_user/{user_id}", response_model=User)
