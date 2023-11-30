@@ -40,6 +40,8 @@ def get_appointments_by_user_id(db: Session, user_id: int):
                 PatientUser.image_url.label("PatientPhoto"),
                 DoctorUser.image_url.label("DoctorPhoto"),
                 Patient.address,
+                PatientUser.email.label("PatientEmail"),
+                DoctorUser.email.label("DoctorEmail")
             )
             .select_from(Appointment)
             .join(DoctorPatients)
@@ -63,6 +65,23 @@ def get_appointments_by_user_id(db: Session, user_id: int):
             "patient_id": row.PatientId,
             "patient_photo": row.PatientPhoto,
             "doctor_photo": row.DoctorPhoto,
-            "patient_address": row.address
+            "patient_address": row.address,
+            "patient_email": row.PatientEmail,
+            "doctor_email": row.DoctorEmail
         })
     return lista
+
+def patch_appointment_state(db: Session, appointment_id: int, state: int):
+    AppointmentDb = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+    if AppointmentDb is None:
+        return None
+    if AppointmentDb.date < datetime.now() and state == 1:
+        AppointmentDb.state = "REALIZADA"
+    elif AppointmentDb.date > datetime.now() and state == 2:
+        AppointmentDb.state = "CANCELADA"
+    else:
+        raise Exception("No se puede cambiar el estado de la cita")
+    db.commit()
+    db.refresh(AppointmentDb)
+    return AppointmentDb.__dict__
+
