@@ -65,3 +65,7 @@ class UserUpdate(User):
 
 class RecoveryPassword(BaseModel):
     email: str
+
+class ChangePassword(BaseModel):
+    token: str
+    password: str

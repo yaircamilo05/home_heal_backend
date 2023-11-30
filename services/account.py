@@ -59,11 +59,14 @@ def recovery_password(data: RecoveryPassword, db) -> str:
     response = send_link_email_recory_password(data_email)
     return response == "ok"
 
-def change_password(token: str, password: str, db) -> bool:
-    if not jwt.validate_token(token):
-        return False
+def change_password(token: str, password: str, db):
+    if jwt.validate_token_email(token) == -1:
+        return {"data":False, "message":"Invalid token"}
+    if jwt.validate_token_email(token) == -2:
+        return {"data":False, "message":"Token expired"}
+    
     user = jwt.validate_token(token)
     user = get_user_by_email(user['email'], db)
     user.password = auth.encript_password(password)
     db.commit()
-    return True
+    return  {"data":True, "message":"OK"}
