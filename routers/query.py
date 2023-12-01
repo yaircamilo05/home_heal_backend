@@ -1,6 +1,9 @@
 import math
 import random
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from sqlalchemy.orm import Session
 import os
 import re
 from requests import get
@@ -8,63 +11,39 @@ from requests import get
 import httpx
 import json
 from bs4 import BeautifulSoup
+from database.db import get_db
+from schemas.diagnostic import DiagnosisResult
 
 from schemas.vital_signs import VitalSignsCreate
 from constants.query import *
+from services.query import vi_searcher
 
 router = APIRouter()
 
 azure_key = os.environ.get('AZURE_BING_AI_KEY')
 
 
-@router.post('/az6-search/{user_id}')
-def search_6(user_id: int, vs: VitalSignsCreate):
-    vs_dict: dict = vs.dict()
-    similar_vs = signos_similares(vs)
+@router.post(
+    '/az6-search/{doctor_id}/{patient_id}', response_model=DiagnosisResult
+)
+def generate_diagnosis(
+        doctor_id: int, patient_id: int,
+        vital_signs: VitalSignsCreate, db: Session = Depends(get_db)
+):
+    generated_dx: DiagnosisResult = vi_searcher(
+        patient_id, doctor_id, vital_signs, db
+    )
+    if generated_dx is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No se encontró el diagnóstico."
+        )
 
-    combined_info = {}
+    return JSONResponse(
+        status_code=status.HTTP_202_ACCEPTED,
+        content={'data': jsonable_encoder(generated_dx)}
+    )
 
-    for param, value in vs_dict.items():
-        sp_params: dict = {
-            'heart_rate': 'ritmo cardiaco',
-            'blood_pressure': 'presión arterial',
-            'O2_saturation': 'saturación de oxígeno'
-        }
-        query = f"Mejores recomendaciones en salud para {sp_params[param]} con {similar_vs['dx']}, qué hacer?"
-        url = "https://api.bing.microsoft.com/v7.0/search"
-        headers = {"Ocp-Apim-Subscription-Key": azure_key}
-        params = {"q": query, "count": 3}
-
-        try:
-            response = get(url, headers=headers, params=params, timeout=30)
-        except Exception as e:
-            return {"error": f"Error al realizar la solicitud HTTP: {str(e)}"}
-
-        rnd_idx: int = random.randint(0, 2)
-        result_url = response.json()["webPages"]["value"][rnd_idx]["url"]
-
-        # Web scraping del sitio mejor calificado
-        page = get(result_url)
-        soup = BeautifulSoup(page.content, "html.parser")
-
-        # Expresiones regulares ajustadas
-        regex_patterns = {
-            'heart_rate': re.compile(r"[Pp]uede [^.]*\."),
-            'blood_pressure': re.compile(r"[Pp]uede [^.]*\."),
-            'O2_saturation': re.compile(r"[Pp]uede [^.]*\.")
-        }
-        patron = regex_patterns.get(param, None)
-
-        texto_pagina = soup.get_text()
-        info_extraida = extraer_datos_salud(texto_pagina, patron)
-        texto_limpio = re.sub(r'[^\w\s]', ' ', info_extraida)
-
-        # Eliminar espacios extra y saltos de línea
-        texto_limpio = re.sub(r'\s+', ' ', texto_limpio).strip()
-
-        combined_info[param] = texto_limpio
-
-    return combined_info
 
 # @router.post('/az5-search/{user_id}')
 # def search_5(user_id: int, vs: VitalSignsCreate):
@@ -123,51 +102,6 @@ def search_6(user_id: int, vs: VitalSignsCreate):
 
 #     return ''.join([f'{v}\n' for k, v in combined_info.items()])
 
-
-@router.post('/consulta-hr/')
-def signos_similares(vs: VitalSignsCreate):
-    signs = leer_json()
-
-    if not signs:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No se encontraron datos de signos vitales."
-        )
-
-    nearest = None
-    smaller_distance = float('inf')
-
-    # Iterar sobre la lista para encontrar el objeto más cercano
-    for vital_sign in signs:
-        distance = math.sqrt(
-            + (vital_sign['hr'] - vs.heart_rate) ** 2
-            + (vital_sign['O2S'] - vs.O2_saturation) ** 2
-            + (vital_sign['bp'] - vs.blood_pressure) ** 2
-        )
-
-        if distance < smaller_distance:
-            smaller_distance = distance
-            nearest = vital_sign
-
-    return {'dx': nearest['Diagnóstico'], 'cx': nearest['Cuidados']}
-
-
-@router.get('/json-data/')
-def leer_json(ruta: str = JSON_DATA_ROUTE):
-    with open(ruta, 'r', encoding='utf8') as f:
-        data = json.load(f)
-    return data
-
-
-def extraer_datos_salud(texto, patron_regex):
-    coincidencias = re.findall(patron_regex, texto)
-    # Asegurarse de que todas las coincidencias sean cadenas
-    coincidencias = [
-        ''.join(coincidencia) if isinstance(
-            coincidencia, tuple
-        ) else coincidencia for coincidencia in coincidencias
-    ]
-    return ". ".join(coincidencias[:3]) if coincidencias else "Tu prescripción se ve natural."
 
 # - unused functions - #
 

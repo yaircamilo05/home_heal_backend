@@ -124,7 +124,7 @@ class Appointment(Base):
 class Diagnostic(Base):
     __tablename__ = 'diagnostics'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    description = Column(String(255))
+    description = Column(String(512))
 
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
     patient_id = Column(Integer, ForeignKey('patients.id'))
