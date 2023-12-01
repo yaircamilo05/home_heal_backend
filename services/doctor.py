@@ -2,7 +2,7 @@ from constants.models import DEFAULT_IMG
 from schemas.doctor import  DoctorBase, DoctorCreate
 from models.base import Doctor, User
 from schemas.user import UserCreate
-
+from utils import auth
 
 def create_doctor(doctor: DoctorCreate, db):
     doctor_user_id = create_user_doctor(doctor, db)
@@ -18,11 +18,7 @@ def create_doctor(doctor: DoctorCreate, db):
     
 
 def create_record_doctor(doctor: DoctorBase, db):
-    doctor_create = Doctor(
-        speciality=doctor.speciality,
-        user_id=doctor.user_id
-    )
-    doctor_db = Doctor(**doctor_create.__dict__)
+    doctor_db = Doctor(**doctor.__dict__)
     db.add(doctor_db)
     db.commit()
     db.refresh(doctor_db)
