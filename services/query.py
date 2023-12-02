@@ -39,8 +39,6 @@ def vi_searcher(
         DoctorPatients.c.patient_id == pat_id
     ).first().id
 
-    print(f'ID:\n{doc_pat_id}\n')
-
     db_diagnosis: Diagnostic = Diagnostic(
         description=f'{diagnosis["heart_rate"]}. {diagnosis["blood_pressure"]}. {diagnosis["O2_saturation"]}.',
         patient_id=pat_id,
