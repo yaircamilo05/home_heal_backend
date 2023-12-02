@@ -2,12 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database.db import get_db
 from schemas.appointment import AppointmentOut, AppointmentSchema, GetAppointmentByDoctorIdByUser
-from services.appointment import get_appointments, get_appointments_by_user_id, create_appointment, patch_appointment_state
+from services.appointment import get_appointments, get_appointments_by_user_id, create_appointment_function, get_available_hours_by_date, patch_appointment_state
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
+
+@router.get("/get_available_hours/{certain_date}", response_model=List[str])
+def get_available_hours(certain_date: str, db: Session = Depends(get_db)):
+    db_hours = get_available_hours_by_date(db, certain_date)
+    if db_hours is None:
+        raise HTTPException(status_code=404, detail="There are no times available for the date")
+    return JSONResponse(status_code=200, content=jsonable_encoder({"data": db_hours}))
 
 @router.get("/get_all_appointments",response_model=List[AppointmentOut])
 def read_appointments(db: Session = Depends(get_db)):
@@ -25,7 +32,7 @@ def read_appointments_by_doctor_patient_id(userId: int, db: Session = Depends(ge
 
 @router.post("/post_appointments")
 def create_appointment(appointment: AppointmentSchema, db: Session = Depends(get_db)):
-    schemaAppointment = create_appointment(db, appointment)
+    schemaAppointment = create_appointment_function(db, appointment)
     if schemaAppointment is None:
         raise HTTPException(status_code=404, detail="Appointment already exists")
     return JSONResponse(status_code=200, content=jsonable_encoder({"data": schemaAppointment}))

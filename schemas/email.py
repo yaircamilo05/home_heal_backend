@@ -30,5 +30,6 @@ class EmailVitalSignsData(BaseModel):
 class EmailLinkData(EmailData):
     link: str
 
-
+class EmailCancelData(EmailData):
+    date: str
     

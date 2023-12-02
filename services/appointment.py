@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import AliasedReturnsRows, or_, select
+from sqlalchemy import AliasedReturnsRows, or_, select, text
 from sqlalchemy.orm import Session
 from models.base import Appointment, Doctor, DoctorPatients, Patient, User
 from schemas.appointment import AppointmentOut, AppointmentRegister, AppointmentSchema, GetAppointmentByDoctorIdByUser
@@ -10,9 +10,9 @@ from sqlalchemy import Date
 def post_appointment(db: Session, appointment: AppointmentRegister):
     print(appointment)
     
-def create_appointment(db: Session, appointment: AppointmentSchema):
+def create_appointment_function(db: Session, appointment: AppointmentSchema):
     appointment_dict = appointment.model_dump()
-    appointment_dict["date"] = datetime.strptime(appointment_dict["date"], "%Y-%m-%d %H:%M:%S")
+    appointment_dict["date"] = datetime.strptime(appointment_dict["date"], "%Y-%m-%d %H:%M")
     appointment_dict["state"] = "PENDIENTE"
     db_appointment = Appointment(**appointment_dict)
     db.add(db_appointment)
@@ -85,3 +85,27 @@ def patch_appointment_state(db: Session, appointment_id: int, state: int):
     db.refresh(AppointmentDb)
     return AppointmentDb.__dict__
 
+def get_available_hours_by_date(db: Session, certain_date: str):
+    query = text("""
+    WITH HorasDisponibles AS (
+        SELECT '07:00' AS Hora
+        UNION SELECT '08:00' UNION SELECT '09:00' 
+        UNION SELECT '10:00' UNION SELECT '11:00' 
+        UNION SELECT '12:00' UNION SELECT '13:00' 
+        UNION SELECT '14:00' UNION SELECT '15:00' 
+        UNION SELECT '16:00' UNION SELECT '17:00'
+    )
+    SELECT Hora
+    FROM HorasDisponibles
+    WHERE Hora NOT IN (
+        SELECT FORMAT(date, 'HH:mm') AS HoraReservada
+        FROM appointments
+        WHERE CAST(date AS DATE) = CAST(:certain_date AS DATE) AND state = 'PENDIENTE'
+    );
+""")
+    result = db.execute(query, {"certain_date": certain_date})
+    rows = result.fetchall()
+    available_hours: list[str]  = []
+    for row in rows:
+        available_hours.append(row.Hora)
+    return available_hours

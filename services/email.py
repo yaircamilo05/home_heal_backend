@@ -1,5 +1,5 @@
 import os
-from schemas.email import EmailRegisterData, EmailVitalSignsData, EmailLinkData
+from schemas.email import EmailCancelData, EmailRegisterData, EmailVitalSignsData, EmailLinkData
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -135,3 +135,31 @@ def send_link_email_recory_password(data:EmailLinkData):
     else:
         return "ko"
 
+def send_email_appointment_cancellation(data: EmailCancelData):
+    hash = data.hash
+    if (hash == os.environ.get('HASH_VALIDATOR')):
+        try:
+            email_sender = os.environ.get("EMAIL_SENDER")
+            to = data.to_destination
+            message = Mail(
+                from_email=email_sender,
+                to_emails=to,
+            )
+            
+            message.dynamic_template_data = {
+                'name': data.name,
+                'date': data.date,
+            }
+            
+            message.template_id = os.environ.get('TEMPLATE_APPOINMENT_CANCELLATION')
+
+            try:
+                sg = SendGridAPIClient(os.getenv('HOME_HEAL_API_SENDGRID'))
+                response = sg.send(message)
+                return "ok"
+            except Exception as e:
+                return "ko"
+        except Exception as e:
+            return "ko"
+    else:
+        return "ko"
