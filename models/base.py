@@ -74,6 +74,7 @@ class Doctor(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     speciality = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User')
     patients = relationship('Patient', secondary=DoctorPatients, back_populates='doctors')
 
 
@@ -107,6 +108,8 @@ class Cares(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String(255))
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
+    doctor=relationship('Doctor', secondary=DoctorPatients, viewonly=True)
+    ##patient=relationship('Patient', secondary=DoctorPatients, back_populates='patients')
 
 
 
@@ -124,8 +127,8 @@ class Appointment(Base):
 class Diagnostic(Base):
     __tablename__ = 'diagnostics'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    description = Column(String(512))
-
+    description = Column(String(255))
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
     patient_id = Column(Integer, ForeignKey('patients.id'))
+    doctor=relationship('Doctor', secondary=DoctorPatients, viewonly=True)
     patient = relationship('Patient', back_populates='diagnostics')

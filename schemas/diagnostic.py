@@ -19,3 +19,11 @@ class DiagnosisResult(DiagnosisRequest):
     id: int
     doctor_patients_id: int
     patient_id: int
+from pydantic import BaseModel
+
+
+class DiagnosticCreate(BaseModel):
+    description: str 
+    patient_id: int
+    doctor_id: int
+
