@@ -10,7 +10,9 @@ class AppointmentSchema(BaseModel):
 class AppointmentRegister(BaseModel):
     reason: str
     date: str
-    speciality: str
+    hour: str
+    doctor_id: int
+    user_id: int
     
 class AppointmentOut(AppointmentSchema):
     id: int
@@ -27,6 +29,15 @@ class AppointmentSchemaIn(AppointmentSchema):
             "doctor_patient_id": self.doctor_patient_id
         }
     
+class PatientAppointment(BaseModel):
+    patient_id: int
+    full_name: str
+    phone: str
+    cc: str
+    email: str    
+class AppointmentRequest(BaseModel):
+    certain_date: str
+    doctor_id: int
 class GetAppointmentByDoctorIdByUser(BaseModel):
     id: int
     reason: str

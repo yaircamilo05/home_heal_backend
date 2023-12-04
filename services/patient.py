@@ -155,8 +155,6 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
 
     return patients_card
 
-
-
 def calculate_age_by_birthdate(birthdate):
     today = date.today()
     age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))

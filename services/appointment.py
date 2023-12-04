@@ -1,15 +1,56 @@
 from datetime import datetime
-from sqlalchemy import AliasedReturnsRows, or_, select, text
+from sqlalchemy import AliasedReturnsRows, insert, or_, select, text
 from sqlalchemy.orm import Session
 from models.base import Appointment, Doctor, DoctorPatients, Patient, User
-from schemas.appointment import AppointmentOut, AppointmentRegister, AppointmentSchema, GetAppointmentByDoctorIdByUser
+from schemas.appointment import AppointmentRegister, AppointmentSchema, GetAppointmentByDoctorIdByUser, PatientAppointment
 from typing import List
 from sqlalchemy.orm import aliased
 from sqlalchemy import Date
 
 def post_appointment(db: Session, appointment: AppointmentRegister):
-    print(appointment)
+    patient = get_patient_by_user_id(db, appointment.user_id)
+    date_time_appointment = appointment.date + " " + appointment.hour
+    doctor_patients_id = relation_exists(db, appointment.doctor_id, patient.patient_id)
+    if(doctor_patients_id != 0):
+        appointment_create = AppointmentSchema(reason=appointment.reason, date=date_time_appointment, doctor_patients_id=doctor_patients_id)
+        return create_appointment_function(db, appointment_create)
+    else:
+        doctor_patient_id = create_relation_doctor_patient(db, appointment.doctor_id, patient.patient_id)
+        appointment_create = AppointmentSchema(reason=appointment.reason, date=date_time_appointment, doctor_patients_id=doctor_patient_id)
+        return create_appointment_function(db, appointment_create)
+        
+def get_patient_by_user_id(db: Session, user_id: int) -> PatientAppointment:
+    query = text("""select P.id as patient_id, U.name + ' ' + U.lastname as full_name, U.phone, U.cc, U.email 
+        from patients P inner join users U
+        on P.user_id = U.id
+        where P.user_id = :user_id """)
     
+    result = db.execute(query, {"user_id": user_id})
+    rows = result.fetchall()
+    if len(rows) == 0:
+        return None
+    return PatientAppointment(patient_id=rows[0].patient_id, full_name=rows[0].full_name, phone=rows[0].phone, cc=rows[0].cc, email=rows[0].email)
+            
+def create_relation_doctor_patient(db: Session, doctor_id: int, patient_id: int):
+    stmt = insert(DoctorPatients).values(doctor_id=doctor_id, patient_id=patient_id).returning(DoctorPatients.c.id)
+    result = db.execute(stmt)
+    db.commit()
+    row = result.fetchone()
+    if row is None:
+        return None
+    return row[0]
+
+def relation_exists(db: Session, doctor_id: int, patient_id: int) -> int:
+    query = text("""select id
+                    from doctor_patients 
+                    where doctor_id = :doctor_id and patient_id = :patient_id""")
+    
+    result = db.execute(query, {"doctor_id": doctor_id, "patient_id": patient_id})
+    rows = result.fetchall()
+    if len(rows) == 0:
+        return 0
+    return rows[0].id
+        
 def create_appointment_function(db: Session, appointment: AppointmentSchema):
     appointment_dict = appointment.model_dump()
     appointment_dict["date"] = datetime.strptime(appointment_dict["date"], "%Y-%m-%d %H:%M")
@@ -85,25 +126,26 @@ def patch_appointment_state(db: Session, appointment_id: int, state: int):
     db.refresh(AppointmentDb)
     return AppointmentDb.__dict__
 
-def get_available_hours_by_date(db: Session, certain_date: str):
+def get_available_hours_by_date(db: Session, certain_date: str, doctor_id: int):
     query = text("""
     WITH HorasDisponibles AS (
-        SELECT '07:00' AS Hora
-        UNION SELECT '08:00' UNION SELECT '09:00' 
-        UNION SELECT '10:00' UNION SELECT '11:00' 
-        UNION SELECT '12:00' UNION SELECT '13:00' 
-        UNION SELECT '14:00' UNION SELECT '15:00' 
-        UNION SELECT '16:00' UNION SELECT '17:00'
-    )
-    SELECT Hora
-    FROM HorasDisponibles
-    WHERE Hora NOT IN (
-        SELECT FORMAT(date, 'HH:mm') AS HoraReservada
-        FROM appointments
-        WHERE CAST(date AS DATE) = CAST(:certain_date AS DATE) AND state = 'PENDIENTE'
+    SELECT '07:00' AS Hora
+    UNION SELECT '08:00' UNION SELECT '09:00' 
+    UNION SELECT '10:00' UNION SELECT '11:00' 
+    UNION SELECT '12:00' UNION SELECT '13:00' 
+    UNION SELECT '14:00' UNION SELECT '15:00' 
+    UNION SELECT '16:00' UNION SELECT '17:00'
+)
+SELECT Hora
+FROM HorasDisponibles
+WHERE Hora NOT IN (
+    SELECT DISTINCT FORMAT(A.date, 'HH:mm') AS HoraReservada
+	FROM appointments A inner join doctor_patients DP
+	ON A.doctor_patients_id = DP.id and DP.doctor_id = :doctor_id
+	WHERE CAST(A.date AS DATE) = CAST(:certain_date AS DATE) AND A.state = 'PENDIENTE'
     );
 """)
-    result = db.execute(query, {"certain_date": certain_date})
+    result = db.execute(query, {"certain_date": certain_date, "doctor_id": doctor_id})
     rows = result.fetchall()
     available_hours: list[str]  = []
     for row in rows:
