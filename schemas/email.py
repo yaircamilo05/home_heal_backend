@@ -33,3 +33,23 @@ class EmailLinkData(EmailData):
 class EmailCancelData(EmailData):
     date: str
     
+class EmailAppointmentData(BaseModel):
+    hash: str
+    name: str
+    to_destination: list[str]
+    text: str
+    date: str
+    address: str
+    reason: str
+    name_patient: str
+    cc_patient: str
+    phone_patient: str
+    email_patient: str
+    name_doctor: str
+    cc_doctor: str
+    phone_doctor: str
+    email_doctor: str
+    problem: str
+    relationship: str
+    
+    

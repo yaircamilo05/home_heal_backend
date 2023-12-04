@@ -35,6 +35,7 @@ class PatientAppointment(BaseModel):
     phone: str
     cc: str
     email: str    
+    address: str
 class AppointmentRequest(BaseModel):
     certain_date: str
     doctor_id: int
