@@ -18,8 +18,8 @@ async def createDiagnostic(diagnostic: DiagnosticCreate, db = Depends(get_db)):
 @router.get("/get-diagnostic-by-patient-id/{patient_id}")
 async def getDiagnosticByPatientId(patient_id: int, db = Depends(get_db)):
     diagnostics = get_diagnostic_by_patient_id(patient_id, db)
-    if not diagnostics:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Cares not found"})
+    if diagnostics is None:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Cares not found"    })
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(diagnostics)})
 
 
