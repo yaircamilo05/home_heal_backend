@@ -124,7 +124,8 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
         User.image_url,
         Patient.gender,
         Patient.birthdate,
-        Patient.address
+        Patient.address,
+        Patient.description
     )
     .select_from(Patient)
     .join(DoctorPatients, DoctorPatients.c.patient_id == Patient.id)
@@ -148,6 +149,7 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
             address=row.address,
             age = calculate_age_by_birthdate(row.birthdate),
             gender = row.gender,
+            description= row.description,
             img_url=row.image_url,
             status= 1
         )
@@ -172,7 +174,8 @@ def get_patient(patient_id,db) -> PatientCard:
                     User.image_url,
                     Patient.gender,
                     Patient.birthdate,
-                    Patient.address)
+                    Patient.address,
+                    Patient.description)
             .select_from(Patient)
             .join(User, User.id == Patient.user_id)
             .where(Patient.id == patient_id))
@@ -189,5 +192,6 @@ def get_patient(patient_id,db) -> PatientCard:
             age = calculate_age_by_birthdate(row.birthdate),
             gender = row.gender,
             img_url=row.image_url,
+            description= row.description,
             status= 1)
     return patient_card

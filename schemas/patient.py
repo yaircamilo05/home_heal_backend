@@ -38,5 +38,6 @@ class PatientCard(BaseModel):
     address:str
     age:int
     gender:str
+    description:str
     img_url:str
     status:int
