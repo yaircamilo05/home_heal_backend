@@ -65,7 +65,7 @@ def change_password(token: str, password: str, db):
     if jwt.validate_token_email(token) == -2:
         return {"data":False, "message":"Token expired"}
     
-    user = jwt.validate_token(token)
+    user = jwt.validate_token_email(token)
     user = get_user_by_email(user['email'], db)
     user.password = auth.encript_password(password)
     db.commit()

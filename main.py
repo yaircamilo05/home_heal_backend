@@ -1,10 +1,11 @@
 import os
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
-from middlewares.guard import Medico, SuperAdmin, Paciente, Familiar
+from middlewares.guard import Medico, SuperAdmin, Paciente, Familiar, FamiliarPaciente,MedicoFamiliar,MedicoPaciente
 from routers import user, rol, account, menu, rol_menu, file, query, patient, vital_signs,appointment,email, doctor, cares, diagnostic
 
 import uvicorn
@@ -15,13 +16,11 @@ app = FastAPI()
 app.title = "Home Heal API"
 app.version = "3.0"
 
+CLIENT = os.getenv("CLIENT_URL")
 # Adicion de middlewares
 app.add_middleware(ErrorHandler)
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware, allow_origins=origins,
-    allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
-)
+origins = [CLIENT]
+app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # se deben agregar las variables de entorno del servidor de la base de datos y las api keys de los servicios de terceros
 
