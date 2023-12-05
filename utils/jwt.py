@@ -2,7 +2,7 @@ import datetime
 import os
 import time
 #from jwt import encode, decode
-from jwt import DecodeError, ExpiredSignatureError
+# from jwt import DecodeError, ExpiredSignatureError
 from schemas.user import User, UserGetLogin, UserWithMenus
 
 def create_token(user: UserGetLogin) -> str:
@@ -27,20 +27,22 @@ def create_token_email(user: UserGetLogin) -> str:
 
 def validate_token(token: str) -> dict:
     key_hash = os.environ.get('KEY_HASH_TOKEN')
-    try:
-        # data: dict = decode(token, key_hash, algorithms=['HS256'])
-        return token
-    except DecodeError:
-        return None
-    except ExpiredSignatureError:
-        return None
+    # try:
+    #     # data: dict = decode(token, key_hash, algorithms=['HS256'])
+    #     return token
+    # except DecodeError:
+    #     return None
+    # except ExpiredSignatureError:
+    #     return None
+    return token
 
 def validate_token_email(token: str):
-    key_hash = os.environ.get('KEY_HASH_TOKEN')
-    try:
-        # data: dict = decode(token, key_hash, algorithms=['HS256'])
-        return token
-    except DecodeError:
-        return -1
-    except ExpiredSignatureError:
-        return -2
+    # key_hash = os.environ.get('KEY_HASH_TOKEN')
+    # try:
+    #     # data: dict = decode(token, key_hash, algorithms=['HS256'])
+    #     return token
+    # except DecodeError:
+    #     return -1
+    # except ExpiredSignatureError:
+    #     return -2
+    return token
