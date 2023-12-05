@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
-from middlewares.guard import SuperAdmin
+from middlewares.guard import Medico, SuperAdmin, Paciente, Familiar
 from routers import user, rol, account, menu, rol_menu, file, query, patient, vital_signs,appointment,email, doctor, cares, diagnostic
 
 import uvicorn
@@ -30,17 +30,16 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
-app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment")
-app.include_router(cares.router, tags=["Cares"], prefix="/cares")
-app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic")
-app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
+app.include_router(appointment.router, tags=["Appointments Doctor y Paciente"], prefix="/appointment", dependencies=[Depends(Medico()), Depends(Paciente())])
+app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(Familiar()), Depends(Medico())])
+app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(Familiar()), Depends(Medico())])
 app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
 app.include_router(email.router, tags=["Emails"], prefix="/email")
 app.include_router(file.router, tags=["Files"], prefix="/file")
-app.include_router(menu.router, tags=["Menus"], prefix="/menu")
+app.include_router(menu.router, tags=["Menus"], prefix="/menu", dependencies=[ Depends(SuperAdmin())])
 app.include_router(patient.router, tags=["Patients"], prefix="/patient")
 app.include_router(query.router, tags=["Queries"], prefix="/query")
-app.include_router(rol.router, tags=["Roles"], prefix="/rol")
+app.include_router(rol.router, tags=["Roles"], prefix="/rol", dependencies=[ Depends(SuperAdmin())])
 app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu", dependencies=[ Depends(SuperAdmin())])
 app.include_router(user.router, tags=["Users"], prefix="/user")
 app.include_router(vital_signs.router, tags=["Vitals Signs"], prefix="/vitalsigns")

@@ -11,7 +11,7 @@ from schemas.user import UserCreate
 from schemas.patient import PatientOut as PatientGet
 from services.user import create_user
 from utils import auth
-from sqlalchemy import select
+from sqlalchemy import select, text
 from utils import azure
 
 #Register user
@@ -113,26 +113,37 @@ def all_patients(db) -> List[PatientGet]:
 
 def get_patients_by_doctor_id(prm_doctor_id,db):
      # Seleccionar los pacientes y sus usuarios asociados al doctor dado
-    query = (
-        select(
-        Patient.id,
-        User.name,
-        User.lastname,
-        User.cc,
-        User.phone,
-        User.email,
-        User.image_url,
-        Patient.gender,
-        Patient.birthdate,
-        Patient.address
-    )
-    .select_from(Patient)
-    .join(DoctorPatients, DoctorPatients.c.patient_id == Patient.id)
-    .join(User, User.id == Patient.user_id)
-    .where(DoctorPatients.c.doctor_id == prm_doctor_id)
-    )
+    query = text("""SELECT 
+    P.id, U.name, U.lastname, U.cc, U.phone, U.email, U.image_url,
+    P.gender, P.birthdate, P.address, P.description,
+    CASE
+        WHEN 
+            COUNT(VS.id) > 0
+            AND (MAX(VS.blood_pressure) >= 36 AND MAX(VS.blood_pressure) <= 37) 
+            AND (MAX(VS.hearth_rate) >= 60 AND MAX(VS.hearth_rate) <= 100) 
+            AND (MAX(VS.O2_saturation) >= 95)
+        THEN 2 -- Estable
+        WHEN 
+            COUNT(VS.id) > 0
+            AND (MAX(VS.blood_pressure) <= 35 OR MAX(VS.blood_pressure) >= 40) 
+            OR (MAX(VS.hearth_rate) <= 50 OR MAX(VS.hearth_rate) >= 120) 
+            OR (MAX(VS.O2_saturation) <= 85)
+        THEN 4 -- Crítico
+        WHEN 
+            COUNT(VS.id) = 0
+        THEN 1 -- Sin signos vitales registrados
+        ELSE 3 -- Riesgoso
+    END AS status
+FROM 
+    patients P
+    INNER JOIN users U ON P.user_id = U.id
+    INNER JOIN doctor_patients DP ON DP.patient_id = P.id
+    LEFT JOIN vital_signs VS ON VS.patient_id = P.id AND DP.doctor_id = :prm_doctor_id
+GROUP BY 
+    P.id, U.name, U.lastname, U.cc, U.phone, U.email, U.image_url,
+    P.gender, P.birthdate, P.address, P.description;""")
 
-    result = db.execute(query)
+    result = db.execute(query, {"prm_doctor_id": prm_doctor_id})
     rows = result.fetchall()
     print("RESULTADO DE LA CONSULTA: ", rows)
     # Procesar el resultado para retornar la información deseada
@@ -149,7 +160,8 @@ def get_patients_by_doctor_id(prm_doctor_id,db):
             age = calculate_age_by_birthdate(row.birthdate),
             gender = row.gender,
             img_url=row.image_url,
-            status= 1
+            description=row.description,
+            status= row.status
         )
         patients_card.append(patient_card)
 
@@ -170,7 +182,8 @@ def get_patient(patient_id,db) -> PatientCard:
                     User.image_url,
                     Patient.gender,
                     Patient.birthdate,
-                    Patient.address)
+                    Patient.address,
+                    Patient.description)
             .select_from(Patient)
             .join(User, User.id == Patient.user_id)
             .where(Patient.id == patient_id))
@@ -186,6 +199,7 @@ def get_patient(patient_id,db) -> PatientCard:
             address=row.address,
             age = calculate_age_by_birthdate(row.birthdate),
             gender = row.gender,
+            description=row.description,
             img_url=row.image_url,
             status= 1)
     return patient_card
