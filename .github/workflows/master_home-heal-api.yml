@@ -29,6 +29,18 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Uninstall existing dependencies
+        run: |
+          pip uninstall -y jwt PyJWT || true
+
+      - name: Install JWT
+        run:
+          pip install jwt
+
+      - name: Install PyJWT
+        run:
+          pip install PyJWT
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
