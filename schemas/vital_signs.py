@@ -3,9 +3,9 @@ from typing import List, Optional
 
 
 class VitualSignsBase(BaseModel):
-    heart_rate: float
-    blood_pressure: float
-    O2_saturation: float
+    heart_rate: int
+    blood_pressure: int
+    O2_saturation: int
 
 
 class VitalSignsCreate(VitualSignsBase):

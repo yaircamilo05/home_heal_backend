@@ -27,11 +27,11 @@ azure_key = os.environ.get('AZURE_BING_AI_KEY')
     '/az6-search/{doctor_id}/{patient_id}', response_model=DiagnosisResult
 )
 def generate_diagnosis(
-        doctor_id: int, patient_id: int,
-        vital_signs: VitalSignsCreate, db: Session = Depends(get_db)
+    doctor_id: int, patient_id: int,
+    db: Session = Depends(get_db)
 ):
     generated_dx: DiagnosisResult = vi_searcher(
-        patient_id, doctor_id, vital_signs, db
+        patient_id, doctor_id, db
     )
     if generated_dx is None:
         raise HTTPException(
@@ -151,50 +151,50 @@ def generate_diagnosis(
 
 
 # @router.post('/az4-search/{user_id}')
-def search(user_id: int, vs: VitalSignsCreate):
-    vs_dict: dict = vs.dict()
-    combined_info = {}
+# def search(user_id: int, vs: VitalSignsCreate):
+#     vs_dict: dict = vs.dict()
+#     combined_info = {}
 
-    for param, value in vs_dict.items():
-        sp_params: dict = {
-            'heart_rate': 'ritmo cardiaco',
-            'blood_pressure': 'presión arterial',
-            'O2_saturation': 'saturación de oxígeno'
-        }
-        query = f"Mejores recomendaciones en salud para {sp_params[param]} de {value}"
-        url = "https://api.bing.microsoft.com/v7.0/search"
-        headers = {"Ocp-Apim-Subscription-Key": azure_key}
-        params = {"q": query, "count": 1}
+#     for param, value in vs_dict.items():
+#         sp_params: dict = {
+#             'heart_rate': 'ritmo cardiaco',
+#             'blood_pressure': 'presión arterial',
+#             'O2_saturation': 'saturación de oxígeno'
+#         }
+#         query = f"Mejores recomendaciones en salud para {sp_params[param]} de {value}"
+#         url = "https://api.bing.microsoft.com/v7.0/search"
+#         headers = {"Ocp-Apim-Subscription-Key": azure_key}
+#         params = {"q": query, "count": 1}
 
-        try:
-            response = get(url, headers=headers, params=params, timeout=30)
-        except Exception as e:
-            return {"error": f"Error al realizar la solicitud HTTP: {str(e)}"}
+#         try:
+#             response = get(url, headers=headers, params=params, timeout=30)
+#         except Exception as e:
+#             return {"error": f"Error al realizar la solicitud HTTP: {str(e)}"}
 
-        result_url = response.json()["webPages"]["value"][0]["url"]
+#         result_url = response.json()["webPages"]["value"][0]["url"]
 
-        # Web scraping del sitio mejor calificado
-        page = get(result_url)
-        soup = BeautifulSoup(page.content, "html.parser")
+#         # Web scraping del sitio mejor calificado
+#         page = get(result_url)
+#         soup = BeautifulSoup(page.content, "html.parser")
 
-        if param == 'O2_saturation':
-            print(soup.get_text())
+#         if param == 'O2_saturation':
+#             print(soup.get_text())
 
-        # Expresiones regulares ajustadas
-        regex_patterns = {
-            'heart_rate': re.compile(r"[Pp]uede [^.]*\."),
-            'blood_pressure': re.compile(r"\d+\..*"),
-            'O2_saturation': re.compile(r"\w+(?:,\s*\w+)*\s*:\s*[^.]*\.")
-        }
-        patron = regex_patterns.get(param, None)
+#         # Expresiones regulares ajustadas
+#         regex_patterns = {
+#             'heart_rate': re.compile(r"[Pp]uede [^.]*\."),
+#             'blood_pressure': re.compile(r"\d+\..*"),
+#             'O2_saturation': re.compile(r"\w+(?:,\s*\w+)*\s*:\s*[^.]*\.")
+#         }
+#         patron = regex_patterns.get(param, None)
 
-        texto_pagina = soup.get_text()
-        info_extraida = extraer_datos_salud(texto_pagina, patron)
-        texto_limpio = re.sub(r'[^\w\s]', ' ', info_extraida)
+#         texto_pagina = soup.get_text()
+#         info_extraida = extraer_datos_salud(texto_pagina, patron)
+#         texto_limpio = re.sub(r'[^\w\s]', ' ', info_extraida)
 
-        # Eliminar espacios extra y saltos de línea
-        texto_limpio = re.sub(r'\s+', ' ', texto_limpio).strip()
+#         # Eliminar espacios extra y saltos de línea
+#         texto_limpio = re.sub(r'\s+', ' ', texto_limpio).strip()
 
-        combined_info[param] = texto_limpio
+#         combined_info[param] = texto_limpio
 
-    return combined_info
+#     return combined_info

@@ -147,7 +147,7 @@ def extraer_datos_salud(texto, patron_regex):
             coincidencia, tuple
         ) else coincidencia for coincidencia in coincidencias
     ]
-    return ". ".join(coincidencias[:3]) if coincidencias else "Tu prescripción se ve natural."
+    return ". ".join(coincidencias[:3]) if coincidencias else ""
 
 
 def validate_they_exists(
