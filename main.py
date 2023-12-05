@@ -14,7 +14,7 @@ import uvicorn
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "Home Heal API"
-app.version = "3.0"
+app.version = "3.5"
 
 CLIENT = os.getenv("CLIENT_URL")
 # Adicion de middlewares
