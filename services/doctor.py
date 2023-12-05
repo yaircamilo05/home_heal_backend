@@ -1,8 +1,32 @@
+from sqlalchemy import text
 from constants.models import DEFAULT_IMG
-from schemas.doctor import  DoctorBase, DoctorCreate
+from schemas.doctor import  DoctorBase, DoctorCreate, DoctorOut
 from models.base import Doctor, User
 from schemas.user import UserCreate
+from utils import auth
 
+
+def get_doctors_speciality(db, speciality: str) -> list[Doctor]:
+   
+    query = text("""select D.id, U.name + ' ' + U.lastname as full_name, U.phone, U.cc, U.email 
+                    from doctors D inner join users U
+                    on D.user_id = U.id
+                    where speciality = :speciality
+                """)
+    
+    result = db.execute(query, {'speciality': speciality})
+    rows = result.fetchall()
+    
+    doctors: list[DoctorOut] = []
+    for row in rows:
+        doctors.append({
+            "id": row.id,
+            "full_name": row.full_name,
+            "phone": row.phone,
+            "cc": row.cc,
+            "email": row.email
+        })
+    return doctors
 
 def create_doctor(doctor: DoctorCreate, db):
     doctor_user_id = create_user_doctor(doctor, db)
@@ -18,11 +42,7 @@ def create_doctor(doctor: DoctorCreate, db):
     
 
 def create_record_doctor(doctor: DoctorBase, db):
-    doctor_create = Doctor(
-        speciality=doctor.speciality,
-        user_id=doctor.user_id
-    )
-    doctor_db = Doctor(**doctor_create.__dict__)
+    doctor_db = Doctor(**doctor.__dict__)
     db.add(doctor_db)
     db.commit()
     db.refresh(doctor_db)
@@ -83,3 +103,16 @@ def exist_user(email: str, db):
     print(email)
     usr = db.query(User).filter(User.email == email).first()
     return usr
+
+def get_doctor_id(db, doctor_id: int) -> DoctorOut:
+    query = """ select D.id, U.name + ' ' + U.lastname as full_name, U.phone, U.cc, U.email
+                from doctors D inner join users U
+                on D.user_id = U.id
+                where D.id = :doctor_id"""
+                
+    result = db.execute(text(query), {'doctor_id': doctor_id})
+    row = result.fetchone()
+    if row is None:
+        return None
+    return DoctorOut(id=row.id, full_name=row.full_name, phone=row.phone, cc=row.cc, email=row.email)
+    

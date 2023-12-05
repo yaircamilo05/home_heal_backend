@@ -9,7 +9,6 @@ from services.user import create_user, exist_user, all_users, put_user, delete_u
 
 router = APIRouter()
 
-
 @router.post("/create_user", response_model=User)
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     new_user = create_user(user, db) 
