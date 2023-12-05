@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
-from middlewares.guard import Medico, SuperAdmin, Paciente, Familiar
+from middlewares.guard import Medico, SuperAdmin, Paciente, Familiar, FamiliarPaciente,MedicoFamiliar,MedicoPaciente
 from routers import user, rol, account, menu, rol_menu, file, query, patient, vital_signs,appointment,email, doctor, cares, diagnostic
 
 import uvicorn
@@ -30,9 +30,9 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
-app.include_router(appointment.router, tags=["Appointments Doctor y Paciente"], prefix="/appointment", dependencies=[Depends(Medico()), Depends(Paciente())])
-app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(Familiar()), Depends(Medico())])
-app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(Familiar()), Depends(Medico())])
+app.include_router(appointment.router, tags=["Appointments Doctor y Paciente"], prefix="/appointment", dependencies=[Depends(MedicoPaciente())])
+app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(MedicoFamiliar())])
+app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(MedicoFamiliar())])
 app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
 app.include_router(email.router, tags=["Emails"], prefix="/email")
 app.include_router(file.router, tags=["Files"], prefix="/file")
