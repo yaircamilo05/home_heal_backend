@@ -38,7 +38,7 @@ app.include_router(doctor.router, tags=["doctors"], prefix="/doctor")
 app.include_router(patient.router, tags=["Patients"], prefix="/patient")
 app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
 app.include_router(email.router, tags=["Emails"], prefix="/email")
-app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment")
+app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment", dependencies=[])
 
 
 @app.get("/")
