@@ -1,9 +1,10 @@
 import os
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
+from middlewares.guard import SuperAdmin
 from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector, vital_signs,appointment
 from routers import user, rol, account, menu, rol_menu, file, query, patient, email, doctor
 
@@ -31,7 +32,7 @@ app.include_router(user.router, tags=["Users"], prefix="/user")
 app.include_router(rol.router, tags=["Roles"], prefix="/rol")
 app.include_router(vital_signs.router, tags=["Vitals Signs"], prefix="/vitalsigns")
 app.include_router(menu.router, tags=["Menus"], prefix="/menu")
-app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu")
+app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu", dependencies=[ Depends(SuperAdmin())])
 app.include_router(query.router, tags=["Queries"], prefix="/query")
 app.include_router(file.router, tags=["Files"], prefix="/file")
 app.include_router(doctor.router, tags=["doctors"], prefix="/doctor")
