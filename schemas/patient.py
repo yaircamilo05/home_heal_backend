@@ -2,6 +2,8 @@ from fastapi import UploadFile
 from pydantic import BaseModel
 from datetime import date
 
+from sqlalchemy import Date
+
 class PatientOut(BaseModel):
     gender: str
     birthdate: date
@@ -25,3 +27,16 @@ class UserRegister(BaseModel):
     familiar_lastname: str
     familiar_email: str
     familiar_phone: str
+
+class PatientCard(BaseModel):
+    patient_id: int
+    name:str
+    lastname:str
+    cc:str
+    email: str
+    phone:str
+    address:str
+    age:int
+    gender:str
+    img_url:str
+    status:int

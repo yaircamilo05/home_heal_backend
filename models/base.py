@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import DateTime, Table, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.db import Base
 
@@ -39,7 +39,6 @@ class User(Base):
 
     rol_id = Column(Integer, ForeignKey('roles.id'))
     rol = relationship('Rol', back_populates='users')
-
 
 class Rol(Base):
     __tablename__ = 'roles'
@@ -97,6 +96,7 @@ class VitalSignRecord(Base):
     hearth_rate = Column(Integer)
     blood_pressure = Column(Integer)
     O2_saturation = Column(Integer)
+    date = Column(String)
 
     patient_id = Column(Integer, ForeignKey('patients.id'))
     patient = relationship('Patient', back_populates='vital_sign_records')
@@ -115,11 +115,10 @@ class Appointment(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     reason = Column(String(255))
-    date = Column(Date)
+    date = Column(DateTime) ##cambio de date a datetime
     state = Column(String(15))
 
     doctor_patients_id = Column(Integer, ForeignKey('doctor_patients.id'))
-    
 
 
 class Diagnostic(Base):
