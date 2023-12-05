@@ -13,7 +13,7 @@ import uvicorn
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "Home Heal API"
-app.version = "1.0"
+app.version = "3.0"
 
 # Adicion de middlewares
 app.add_middleware(ErrorHandler)
@@ -27,7 +27,7 @@ app.add_middleware(
 
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
-app.include_router(appointment.router, tags=["Appointments Doctor y Paciente"], prefix="/appointment", dependencies=[Depends(Medico()), Depends(Paciente())])
+app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment", dependencies=[Depends(Medico()), Depends(Paciente())])
 app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(Familiar()), Depends(Medico())])
 app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(Familiar()), Depends(Medico())])
 app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
