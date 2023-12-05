@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from .user import User
 
 class DoctorBase(BaseModel):
     speciality: str
@@ -21,4 +22,7 @@ class DoctorCreate(BaseModel):
     phone: str
     password: str
     specialty: str
+
+class DoctorWithUser(DoctorBase):
+    user: User
 

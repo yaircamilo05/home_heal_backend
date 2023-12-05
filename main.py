@@ -5,8 +5,7 @@ from database.db import Base, engine
 from middlewares.error import ErrorHandler
 from database.db import Base, engine
 from middlewares.guard import SuperAdmin
-from routers import user, rol, account, menu, rol_menu, file, query, patient, azure_connector, vital_signs,appointment
-from routers import user, rol, account, menu, rol_menu, file, query, patient, email, doctor
+from routers import user, rol, account, menu, rol_menu, file, query, patient, vital_signs,appointment,email, doctor, cares, diagnostic
 
 import uvicorn
 
@@ -29,6 +28,9 @@ app.add_middleware(
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
 app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment")
+app.include_router(cares.router, tags=["Cares"], prefix="/cares")
+app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic")
+app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
 app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
 app.include_router(email.router, tags=["Emails"], prefix="/email")
 app.include_router(file.router, tags=["Files"], prefix="/file")
@@ -39,7 +41,6 @@ app.include_router(rol.router, tags=["Roles"], prefix="/rol")
 app.include_router(rol_menu.router, tags=["RolesMenus"], prefix="/rol_menu", dependencies=[ Depends(SuperAdmin())])
 app.include_router(user.router, tags=["Users"], prefix="/user")
 app.include_router(vital_signs.router, tags=["Vitals Signs"], prefix="/vitalsigns")
-
 # app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
 
 
