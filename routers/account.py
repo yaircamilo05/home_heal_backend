@@ -13,7 +13,8 @@ from services import account
 router = APIRouter()
 
 
-@router.post('/login')
+@router.post('/login',
+             summary='Login a user in the database.')
 def login(credentials: credentials_login, db: Session = Depends(get_db)):
     token = account.login(credentials, db)
     if token is None:
@@ -21,7 +22,8 @@ def login(credentials: credentials_login, db: Session = Depends(get_db)):
     return JSONResponse(status_code=200, content={"token": token})
 
 
-@router.get('/validate_token')
+@router.get('/validate_token',
+            summary='Validate a token in the database.')
 def validate_token(token: HTTPBearer = Depends(NeedToken()), db: Session = Depends(get_db)):
     token_data = account.validate_token(token=token, db=db)
     if token_data is None:
