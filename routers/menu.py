@@ -11,7 +11,8 @@ from fastapi.encoders import jsonable_encoder
 router = APIRouter()
 
 
-@router.post("/create_menu", response_model=MenuOut)
+@router.post("/create_menu", response_model=MenuOut,
+             summary="Create a new menu in the database.")
 def create_menu(menu: MenuSchema, db: Session = Depends(get_db)):
     menuCreated=  post_menu(db, menu)
     if menuCreated is None:
@@ -19,7 +20,8 @@ def create_menu(menu: MenuSchema, db: Session = Depends(get_db)):
     return JSONResponse(status_code=201, content=jsonable_encoder({"data": menuCreated}))
 
 
-@router.get("/menus", response_model=List[MenuOut])
+@router.get("/menus", response_model=List[MenuOut],
+            summary="Get all menus in the database.")
 def read_menus(db: Session = Depends(get_db)):
     db_menus = get_menus(db)
     if db_menus is None:
@@ -27,7 +29,8 @@ def read_menus(db: Session = Depends(get_db)):
     return JSONResponse(status_code=200, content=jsonable_encoder({"data": db_menus}))
 
 
-@router.get("/get_menu_by_id/{menu_id}", response_model=MenuOut)
+@router.get("/get_menu_by_id/{menu_id}", response_model=MenuOut,
+            summary="Get a menu by id in the database.")
 def read_menu(menu_id: int, db: Session = Depends(get_db)):
     db_menu = get_menu(db, menu_id=menu_id)
     if db_menu is None:
@@ -35,7 +38,8 @@ def read_menu(menu_id: int, db: Session = Depends(get_db)):
     return JSONResponse(status_code=200, content=jsonable_encoder({"data": db_menu}))
 
 
-@router.put("/edit_menu/{menu_id}", response_model=MenuOut)
+@router.put("/edit_menu/{menu_id}", response_model=MenuOut,
+            summary="Edit a menu in the database.")
 def update_menu(menu_id: int, menu: MenuSchema, db: Session = Depends(get_db)):
     db_menu = put_menu(db, menu_id=menu_id, menu=menu)
     if db_menu is None:
@@ -44,7 +48,8 @@ def update_menu(menu_id: int, menu: MenuSchema, db: Session = Depends(get_db)):
 
 
 
-@router.delete("/delete_menu/{menu_id}", response_model=MenuOut)
+@router.delete("/delete_menu/{menu_id}", response_model=MenuOut,
+               summary="Delete a menu in the database.")
 def delete_menu_route(menu_id: int, db: Session = Depends(get_db)):
     menu_removed = delete_menu(db, menu_id=menu_id)
     if menu_removed is None:

@@ -15,7 +15,8 @@ class SignosVitales(BaseModel):
 HEALTH_BOT_ENDPOINT = 'https://bot-api-eastus.healthbot.microsoft.com/api/tenants/health-i-aemela6/diagnose'
 HEALTH_BOT_SECRET = '6oG8Q~Mj25XWuoSe-qK5avEryTumaWNFvScR1c~L'
 
-@router.post("/query/buscar/")
+@router.post("/query/search/",
+             summary="Search the best diagnosis based on the patient actual vital signs (ia implementation).")
 async def diagnosticar(signos: SignosVitales):
     try:
         # Preparar los datos para enviar al Health Bot
