@@ -42,6 +42,8 @@ app.include_router(vital_signs.router, tags=["Vitals Signs"], prefix="/vitalsign
 # app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
 
 
+# app.include_router(azure_connector.router, tags=['Azure'], prefix='/azc')
+
 
 @app.get("/")
 async def root():
