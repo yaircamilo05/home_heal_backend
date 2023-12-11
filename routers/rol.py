@@ -14,17 +14,8 @@ from services.rol import get_roles_with_menus, post_rol, exist_rol, get_roles, g
 router = APIRouter()
 
 
-@router.post(
-    '/role', response_model=RolOut,
-    responses={
-        status.HTTP_201_CREATED: {'description': 'Successful Response', 'model': List[RolOut]},
-        status.HTTP_424_FAILED_DEPENDENCY: {'description': 'Rol already exists', 'model': List[RolOut]},
-        status.HTTP_500_INTERNAL_SERVER_ERROR: {
-            'description': 'Internal Server Error', 'model': List[RolOut]}
-    },
-    summary="Create a new role",
-    description="# Create a new role with the name and description"
-)
+@router.post('/role', response_model=RolOut,
+             summary='Create a new rol in the database.')
 async def create_rol(rol: RolCreate, db: Session = Depends(get_db)) -> RolOut:
     rol_created: RolOut = post_rol(rol, db)
     if rol_created is None:
@@ -38,7 +29,8 @@ async def create_rol(rol: RolCreate, db: Session = Depends(get_db)) -> RolOut:
     )
 
 
-@router.get('/roles', response_model=List[RolOut])
+@router.get('/roles', response_model=List[RolOut],
+            summary='Get all roles in the database.')
 async def read_roles(db: Session = Depends(get_db)) -> List[RolOut]:
     roles: RolOut = get_roles(db)
     if not roles:
@@ -54,7 +46,8 @@ async def read_roles(db: Session = Depends(get_db)) -> List[RolOut]:
     )
 
 
-@router.get('/roles_with_menus', response_model=List[RolWithMenus])
+@router.get('/roles_with_menus', response_model=List[RolWithMenus],
+            summary='Get all roles with menus in the database.')
 async def read_roles(db: Session = Depends(get_db)):
     roles_with_menus = get_roles_with_menus(db)
     if roles_with_menus is None:
@@ -64,7 +57,8 @@ async def read_roles(db: Session = Depends(get_db)):
     return JSONResponse(status_code=200, content={"data": jsonable_encoder(roles_with_menus)})
 
 
-@router.get('/role/{id}', response_model=RolOut)
+@router.get('/role/{id}', response_model=RolOut,
+            summary='Get a rol by id in the database.')
 async def read_rol(id: int, db: Session = Depends(get_db)) -> RolOut:
     rol: RolOut = get_role(id, db)
     if rol is None:
@@ -80,7 +74,8 @@ async def read_rol(id: int, db: Session = Depends(get_db)) -> RolOut:
     )
 
 
-@router.put('/role/{id}', response_model=RolOut)
+@router.put('/role/{id}', response_model=RolOut,
+            summary='Update a rol by id in the database.')
 async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) -> RolOut:
     rol_updated: RolOut = put_rol(id, rol, db)
     if rol_updated is None:
@@ -95,7 +90,8 @@ async def update_role(id: int, rol: RolUpdate, db: Session = Depends(get_db)) ->
     )
 
 
-@router.delete('/role/{id}')
+@router.delete('/role/{id}',
+               summary='Delete a rol by id in the database.')
 async def remove_role(id: int, db: Session = Depends(get_db)) -> bool:
     rol_removed: bool = delete_rol(id, db)
     if rol_removed:

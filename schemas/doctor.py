@@ -5,6 +5,13 @@ class DoctorBase(BaseModel):
     speciality: str
     user_id: int
 
+class DoctorOut(BaseModel):
+    id: int
+    full_name: str
+    phone: str
+    cc: str
+    email: str
+    
 class DoctorCreate(BaseModel):
     name: str
     lastname: str

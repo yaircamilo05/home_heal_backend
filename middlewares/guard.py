@@ -42,3 +42,25 @@ class Medico(HTTPBearer):
         data = validate_token(auth.credentials)
         if data['rol_id'] != 4:
             raise HTTPException(status_code=401, detail="Not authorized")
+
+class MedicoPaciente(HTTPBearer):
+    async def __call__(self, request: Request):
+        auth = await super().__call__(request)
+        data = validate_token(auth.credentials)
+        if data['rol_id'] != 4 and data['rol_id'] != 2:
+            raise HTTPException(status_code=401, detail="Not authorized")
+        
+class MedicoFamiliar(HTTPBearer):
+    async def __call__(self, request: Request):
+        auth = await super().__call__(request)
+        data = validate_token(auth.credentials)
+        if data['rol_id'] != 4 and data['rol_id'] != 3:
+            raise HTTPException(status_code=401, detail="Not authorized")
+        
+class FamiliarPaciente(HTTPBearer):
+    async def __call__(self, request: Request):
+        auth = await super().__call__(request)
+        data = validate_token(auth.credentials)
+        if data['rol_id'] != 3 and data['rol_id'] != 2:
+            raise HTTPException(status_code=401, detail="Not authorized")
+        
