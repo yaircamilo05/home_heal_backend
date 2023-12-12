@@ -14,7 +14,7 @@ import uvicorn
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "Home Heal API"
-app.version = "3.0"
+app.version = "3.5"
 
 CLIENT = os.getenv("CLIENT_URL")
 # Adicion de middlewares
@@ -26,9 +26,9 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 # Adición de routers
 app.include_router(account.router, tags=["Accounts"], prefix="/account")
-app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment", dependencies=[Depends(Medico()), Depends(Paciente())])
-app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(Familiar()), Depends(Medico())])
-app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(Familiar()), Depends(Medico())])
+app.include_router(appointment.router, tags=["Appointments"], prefix="/appointment", dependencies=[Depends(MedicoPaciente())])
+app.include_router(cares.router, tags=["Cares"], prefix="/cares", dependencies=[Depends(MedicoFamiliar())])
+app.include_router(diagnostic.router, tags=["Diagnostic"], prefix="/diagnostic", dependencies=[Depends(MedicoFamiliar())])
 app.include_router(doctor.router, tags=["Doctors"], prefix="/doctor")
 app.include_router(email.router, tags=["Emails"], prefix="/email")
 app.include_router(file.router, tags=["Files"], prefix="/file")

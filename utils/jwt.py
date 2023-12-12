@@ -26,6 +26,7 @@ def create_token_email(user: UserGetLogin) -> str:
 
 def validate_token(token: str) -> dict:
     key_hash = os.environ.get('KEY_HASH_TOKEN')
+    print("La clave para el token",key_hash)
     try:
         data: dict = jwt.decode(
             token=token, 
