@@ -161,7 +161,6 @@ GROUP BY
             gender = row.gender,
             description= row.description,
             img_url=row.image_url,
-            description=row.description,
             status= row.status
         )
         patients_card.append(patient_card)
@@ -202,6 +201,5 @@ def get_patient(patient_id,db) -> PatientCard:
             gender = row.gender,
             description=row.description,
             img_url=row.image_url,
-            description= row.description,
             status= 1)
     return patient_card
