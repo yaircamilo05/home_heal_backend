@@ -1,9 +1,17 @@
 from pydantic import BaseModel
+from .user import User
 
 class DoctorBase(BaseModel):
     speciality: str
     user_id: int
 
+class DoctorOut(BaseModel):
+    id: int
+    full_name: str
+    phone: str
+    cc: str
+    email: str
+    
 class DoctorCreate(BaseModel):
     name: str
     lastname: str
@@ -14,4 +22,7 @@ class DoctorCreate(BaseModel):
     phone: str
     password: str
     specialty: str
+
+class DoctorWithUser(DoctorBase):
+    user: User
 

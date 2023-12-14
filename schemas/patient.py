@@ -40,4 +40,5 @@ class PatientCard(BaseModel):
     gender:str
     description:str
     img_url:str
+    description:str 
     status:int
