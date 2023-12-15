@@ -11,10 +11,8 @@ from services.patient import all_patients, get_patient, register_user, get_patie
 
 router = APIRouter()
 
-
 def parse_user(user: str = Body(...),):
     return parse_obj_as(UserRegister, json.loads(user))
-
 
 @router.post("/register_user",
              summary="Create a new user in the database.")
