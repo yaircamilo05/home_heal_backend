@@ -1,0 +1,502 @@
+[
+  {
+    "hr": 55.0,
+    "bp": 120.0,
+    "O2S": 98.0,
+    "Diagnóstico": "Posible bradicardia leve, sin signos de hipertensión o hipoxemia.",
+    "Cuidados": [
+      "Controlar regularmente el ritmo cardíaco.",
+      "Consultar al médico si aparecen síntomas como fatiga o mareos."
+    ]
+  },
+  {
+    "hr": 110.0,
+    "bp": 150.0,
+    "O2S": 95.0,
+    "Diagnóstico": "Tachycardia con hipertensión leve.",
+    "Cuidados": [
+      "Revisión médica inmediata.",
+      "Adoptar cambios en el estilo de vida, como dieta y ejercicio."
+    ]
+  },
+  {
+    "hr": 70.0,
+    "bp": 180.0,
+    "O2S": 92.0,
+    "Diagnóstico": "Presión arterial alta con oxigenación adecuada.",
+    "Cuidados": [
+      "Control urgente de la presión arterial.",
+      "Evaluación para medicación antihipertensiva."
+    ]
+  },
+  {
+    "hr": 60.0,
+    "bp": 130.0,
+    "O2S": 88.0,
+    "Diagnóstico": "Hipoxemia moderada, presión arterial y ritmo cardíaco normales.",
+    "Cuidados": [
+      "Suministrar oxígeno suplementario.",
+      "Buscar causas subyacentes de la hipoxemia."
+    ]
+  },
+  {
+    "hr": 80.0,
+    "bp": 160.0,
+    "O2S": 90.0,
+    "Diagnóstico": "Hipertensión moderada con oxigenación en el límite inferior.",
+    "Cuidados": [
+      "Manejo de la hipertensión con medicación.",
+      "Monitoreo de la saturación de oxígeno."
+    ]
+  },
+  {
+    "hr": 90.0,
+    "bp": 140.0,
+    "O2S": 99.0,
+    "Diagnóstico": "Ritmo cardíaco ligeramente elevado con presión arterial alta.",
+    "Cuidados": [
+      "Control de la frecuencia cardíaca.",
+      "Consulta médica para evaluación de hipertensión."
+    ]
+  },
+  {
+    "hr": 65.0,
+    "bp": 110.0,
+    "O2S": 97.0,
+    "Diagnóstico": "Valores normales, sin indicaciones de trastorno cardiopulmonar.",
+    "Cuidados": [
+      "Mantener un estilo de vida saludable.",
+      "Controles regulares de salud."
+    ]
+  },
+  {
+    "hr": 50.0,
+    "bp": 100.0,
+    "O2S": 96.0,
+    "Diagnóstico": "Bradycardia en atleta, presión arterial y oxígeno normales.",
+    "Cuidados": [
+      "Monitoreo continuo si hay síntomas.",
+      "Evaluación médica si hay cambios en el rendimiento deportivo."
+    ]
+  },
+  {
+    "hr": 120.0,
+    "bp": 170.0,
+    "O2S": 93.0,
+    "Diagnóstico": "Tachycardia con hipertensión y hipoxemia leve.",
+    "Cuidados": [
+      "Evaluación médica inmediata.",
+      "Posible necesidad de oxigenoterapia."
+    ]
+  },
+  {
+    "hr": 100.0,
+    "bp": 90.0,
+    "O2S": 100.0,
+    "Diagnóstico": "Tachycardia con presión arterial baja y oxigenación normal.",
+    "Cuidados": [
+      "Monitoreo de síntomas.",
+      "Consulta médica para descartar arritmias."
+    ]
+  },
+  {
+    "hr": 58.0,
+    "bp": 145.0,
+    "O2S": 94.0,
+    "Diagnóstico": "Bradycardia con hipertensión leve.",
+    "Cuidados": [
+      "Revisión de medicamentos.",
+      "Control de presión arterial."
+    ]
+  },
+  {
+    "hr": 85.0,
+    "bp": 155.0,
+    "O2S": 91.0,
+    "Diagnóstico": "Presión arterial ligeramente alta con oxigenación adecuada.",
+    "Cuidados": [
+      "Adoptar dieta baja en sal.",
+      "Control regular de la presión arterial."
+    ]
+  },
+  {
+    "hr": 55.0,
+    "bp": 120.0,
+    "O2S": 98.0,
+    "Diagnóstico": "Posible bradicardia leve, sin signos de hipertensión o hipoxemia.",
+    "Cuidados": [
+      "Controlar regularmente el ritmo cardíaco.",
+      "Consultar al médico si hay síntomas adicionales."
+    ]
+  },
+  {
+    "hr": 110.0,
+    "bp": 150.0,
+    "O2S": 95.0,
+    "Diagnóstico": "Taquicardia con hipertensión leve.",
+    "Cuidados": [
+      "Evaluar factores de estrés.",
+      "Considerar medicación antihipertensiva."
+    ]
+  },
+  {
+    "hr": 72.0,
+    "bp": 180.0,
+    "O2S": 92.0,
+    "Diagnóstico": "Hipertensión severa, riesgo de hipoxemia.",
+    "Cuidados": [
+      "Urgente atención médica.",
+      "Modificar dieta y estilo de vida."
+    ]
+  },
+  {
+    "hr": 60.0,
+    "bp": 110.0,
+    "O2S": 88.0,
+    "Diagnóstico": "Saturación de oxígeno baja.",
+    "Cuidados": [
+      "Oxigenoterapia.",
+      "Evaluar función pulmonar."
+    ]
+  },
+  {
+    "hr": 100.0,
+    "bp": 100.0,
+    "O2S": 99.0,
+    "Diagnóstico": "Frecuencia cardíaca elevada, presión normal.",
+    "Cuidados": [
+      "Monitoreo de actividad física.",
+      "Relajación y técnicas de reducción de estrés."
+    ]
+  },
+  {
+    "hr": 80.0,
+    "bp": 140.0,
+    "O2S": 97.0,
+    "Diagnóstico": "Prehipertensión, ritmo cardíaco normal.",
+    "Cuidados": [
+      "Chequeos regulares de presión arterial.",
+      "Ejercicio y dieta saludable."
+    ]
+  },
+  {
+    "hr": 58.0,
+    "bp": 160.0,
+    "O2S": 94.0,
+    "Diagnóstico": "Bradycardia con hipertensión moderada.",
+    "Cuidados": [
+      "Consultar cardiología.",
+      "Revisión de medicamentos."
+    ]
+  },
+  {
+    "hr": 115.0,
+    "bp": 90.0,
+    "O2S": 96.0,
+    "Diagnóstico": "Taquicardia sin hipertensión.",
+    "Cuidados": [
+      "Evaluación de ansiedad.",
+      "Control del ritmo cardíaco."
+    ]
+  },
+  {
+    "hr": 70.0,
+    "bp": 200.0,
+    "O2S": 90.0,
+    "Diagnóstico": "Hipertensión crítica, posible hipoxemia.",
+    "Cuidados": [
+      "Atención médica inmediata.",
+      "Medición frecuente de presión arterial."
+    ]
+  },
+  {
+    "hr": 65.0,
+    "bp": 130.0,
+    "O2S": 100.0,
+    "Diagnóstico": "Presión arterial ligeramente elevada.",
+    "Cuidados": [
+      "Control de dieta.",
+      "Ejercicio regular."
+    ]
+  },
+  {
+    "hr": 120.0,
+    "bp": 85.0,
+    "O2S": 93.0,
+    "Diagnóstico": "Taquicardia con presión arterial normal.",
+    "Cuidados": [
+      "Hidratación adecuada.",
+      "Revisión de causas de taquicardia."
+    ]
+  },
+  {
+    "hr": 62.0,
+    "bp": 105.0,
+    "O2S": 91.0,
+    "Diagnóstico": "Ritmo cardíaco y presión arterial normal, saturación de oxígeno en el límite bajo.",
+    "Cuidados": [
+      "Supervisión de la respiración.",
+      "Consulta médica si persiste."
+    ]
+  },
+  {
+    "hr": 90.0,
+    "bp": 175.0,
+    "O2S": 89.0,
+    "Diagnóstico": "Hipertensión severa con frecuencia cardíaca elevada.",
+    "Cuidados": [
+      "Reducción del estrés.",
+      "Tratamiento antihipertensivo."
+    ]
+  },
+  {
+    "hr": 110.0,
+    "bp": 150.0,
+    "O2S": 95.0,
+    "Diagnóstico": "Tachycardia leve y hipertensión moderada.",
+    "Cuidados": [
+      "Consulta médica para manejo de hipertensión.",
+      "Monitoreo de la frecuencia cardíaca."
+    ]
+  },
+  {
+    "hr": 72.0,
+    "bp": 180.0,
+    "O2S": 92.0,
+    "Diagnóstico": "Presión arterial muy alta con saturación de oxígeno en límite inferior.",
+    "Cuidados": [
+      "Tratamiento urgente para hipertensión.",
+      "Valoración de función respiratoria."
+    ]
+  },
+  {
+    "hr": 88.0,
+    "bp": 135.0,
+    "O2S": 97.0,
+    "Diagnóstico": "Ritmo cardíaco y presión arterial en rangos normales-altos, buena saturación de oxígeno.",
+    "Cuidados": [
+      "Mantener un estilo de vida saludable.",
+      "Control periódico de signos vitales."
+    ]
+  },
+  {
+    "hr": 55.0,
+    "bp": 120.0,
+    "O2S": 98.0,
+    "Diagnóstico": "Posible bradicardia leve, sin signos de hipertensión o hipoxemia.",
+    "Cuidados": [
+      "Controlar regularmente el ritmo cardíaco.",
+      "Considerar evaluación médica si se presentan síntomas."
+    ]
+  },
+  {
+    "hr": 110.0,
+    "bp": 150.0,
+    "O2S": 95.0,
+    "Diagnóstico": "Tachycardia con hipertensión leve.",
+    "Cuidados": [
+      "Evaluar factores de riesgo cardiovascular.",
+      "Revisar medicación actual y ajustar si es necesario."
+    ]
+  },
+  {
+    "hr": 100.0,
+    "bp": 180.0,
+    "O2S": 92.0,
+    "Diagnóstico": "Hipertensión severa con taquicardia.",
+    "Cuidados": [
+      "Urgente evaluación médica.",
+      "Monitorizar la presión arterial y el oxígeno en sangre."
+    ]
+  },
+  {
+    "hr": 70.0,
+    "bp": 140.0,
+    "O2S": 89.0,
+    "Diagnóstico": "Hipertensión en el límite con hipoxemia leve.",
+    "Cuidados": [
+      "Controlar la dieta y el ejercicio.",
+      "Considerar oxigenoterapia."
+    ]
+  },
+  {
+    "hr": 48.0,
+    "bp": 110.0,
+    "O2S": 96.0,
+    "Diagnóstico": "Bradycardia marcada, probablemente relacionada con el acondicionamiento físico.",
+    "Cuidados": [
+      "Monitoreo regular.",
+      "Descartar patologías cardíacas si hay síntomas."
+    ]
+  },
+  {
+    "hr": 120.0,
+    "bp": 90.0,
+    "O2S": 93.0,
+    "Diagnóstico": "Taquicardia sin hipertensión o hipoxemia significativa.",
+    "Cuidados": [
+      "Reducir factores de estrés.",
+      "Revisar el consumo de cafeína."
+    ]
+  },
+  {
+    "hr": 62.0,
+    "bp": 160.0,
+    "O2S": 91.0,
+    "Diagnóstico": "Hipertensión moderada sin alteraciones en la frecuencia cardíaca.",
+    "Cuidados": [
+      "Adaptar tratamiento antihipertensivo.",
+      "Seguimiento médico cercano."
+    ]
+  },
+  {
+    "hr": 58.0,
+    "bp": 100.0,
+    "O2S": 99.0,
+    "Diagnóstico": "Ritmo cardíaco ligeramente bajo con presión arterial normal.",
+    "Cuidados": [
+      "Evaluación de la actividad física regular.",
+      "Monitoreo de signos de fatiga o mareos."
+    ]
+  },
+  {
+    "hr": 115.0,
+    "bp": 130.0,
+    "O2S": 90.0,
+    "Diagnóstico": "Taquicardia con hipertensión leve y oxigenación en el límite bajo.",
+    "Cuidados": [
+      "Evaluación cardiovascular.",
+      "Considerar ajustes en el estilo de vida."
+    ]
+  },
+  {
+    "hr": 65.0,
+    "bp": 85.0,
+    "O2S": 94.0,
+    "Diagnóstico": "Signos vitales dentro de rangos normales.",
+    "Cuidados": [
+      "Mantener estilo de vida saludable.",
+      "Control regular de la salud."
+    ]
+  },
+  {
+    "hr": 77.0,
+    "bp": 145.0,
+    "O2S": 97.0,
+    "Diagnóstico": "Presión arterial ligeramente elevada, ritmo cardíaco normal.",
+    "Cuidados": [
+      "Modificar dieta para reducir la presión arterial.",
+      "Actividad física regular."
+    ]
+  },
+  {
+    "hr": 83.0,
+    "bp": 105.0,
+    "O2S": 88.0,
+    "Diagnóstico": "Oxigenación baja con ritmo cardíaco y presión arterial normales.",
+    "Cuidados": [
+      "Revisar función pulmonar.",
+      "Considerar suplemento de oxígeno si es necesario."
+    ]
+  },
+  {
+    "hr": 110.0,
+    "bp": 150.0,
+    "O2S": 92.0,
+    "Diagnóstico": "Taquicardia con hipertensión leve y posible hipoxemia.",
+    "Cuidados": [
+      "Evaluar riesgo cardiovascular.",
+      "Considerar oxigenoterapia si hay dificultad respiratoria."
+    ]
+  },
+  {
+    "hr": 70.0,
+    "bp": 180.0,
+    "O2S": 96.0,
+    "Diagnóstico": "Presión arterial alta sin taquicardia o hipoxemia significativa.",
+    "Cuidados": [
+      "Monitoreo de la presión arterial.",
+      "Adoptar dieta baja en sal y ejercicio regular."
+    ]
+  },
+  {
+    "hr": 48.0,
+    "bp": 110.0,
+    "O2S": 99.0,
+    "Diagnóstico": "Bradycardia significativa, potencialmente atlética.",
+    "Cuidados": [
+      "Verificar si hay condiciones cardíacas subyacentes.",
+      "Mantener un seguimiento regular con un cardiólogo."
+    ]
+  },
+  {
+    "hr": 120.0,
+    "bp": 130.0,
+    "O2S": 90.0,
+    "Diagnóstico": "Taquicardia con hipertensión moderada y posible hipoxemia.",
+    "Cuidados": [
+      "Revisión médica inmediata.",
+      "Evaluación para terapia de oxígeno."
+    ]
+  },
+  {
+    "hr": 65.0,
+    "bp": 85.0,
+    "O2S": 97.0,
+    "Diagnóstico": "Vitales normales, sin indicación de problemas cardíacos o respiratorios.",
+    "Cuidados": [
+      "Mantener un estilo de vida saludable.",
+      "Control periódico de signos vitales."
+    ]
+  },
+  {
+    "hr": 90.0,
+    "bp": 160.0,
+    "O2S": 94.0,
+    "Diagnóstico": "Frecuencia cardíaca elevada con hipertensión y oxigenación adecuada.",
+    "Cuidados": [
+      "Controlar la presión arterial.",
+      "Revisar factores de riesgo cardiovascular."
+    ]
+  },
+  {
+    "hr": 52.0,
+    "bp": 95.0,
+    "O2S": 100.0,
+    "Diagnóstico": "Bradycardia, probablemente condición física alta.",
+    "Cuidados": [
+      "Seguimiento con especialista en caso de síntomas.",
+      "Ejercicio regular manteniendo monitoreo."
+    ]
+  },
+  {
+    "hr": 115.0,
+    "bp": 100.0,
+    "O2S": 91.0,
+    "Diagnóstico": "Taquicardia sin hipertensión, leve disminución de O2.",
+    "Cuidados": [
+      "Verificar causas de taquicardia.",
+      "Considerar análisis para descartar problemas respiratorios."
+    ]
+  },
+  {
+    "hr": 80.0,
+    "bp": 145.0,
+    "O2S": 95.0,
+    "Diagnóstico": "Ligeramente elevada frecuencia cardíaca y presión arterial.",
+    "Cuidados": [
+      "Recomendar reducción del estrés.",
+      "Evaluar dieta y actividad física."
+    ]
+  },
+  {
+    "hr": 58.0,
+    "bp": 105.0,
+    "O2S": 93.0,
+    "Diagnóstico": "Bradycardia leve, presión arterial y oxígeno dentro de rangos normales.",
+    "Cuidados": [
+      "Seguimiento rutinario.",
+      "Consultar si aparecen síntomas como mareos o debilidad."
+    ]
+  }
+]

@@ -16,6 +16,8 @@ RELAXED_VS: dict = {
     "O2_saturation": 95
 }
 
+JSON_DATA_ROUTE: str = './database/data.json'
+
 MC_LINK: str = [{
     'heart_rate': [
         'https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates',

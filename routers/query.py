@@ -1,8 +1,23 @@
-from fastapi import APIRouter, HTTPException, status
+import math
+import random
+from fastapi import APIRouter, Depends, HTTPException, requests, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-import requests
+from sqlalchemy.orm import Session
+import os
+import re
+from requests import get
 
+import httpx
+import json
+from bs4 import BeautifulSoup
+from database.db import get_db
+from schemas.diagnostic import DiagnosisResult
+
+from schemas.vital_signs import VitalSignsCreate
 from constants.query import *
+from services.query import vi_searcher
 
 router = APIRouter()
 

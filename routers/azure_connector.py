@@ -7,11 +7,11 @@
 # connected_clients = set()
 
 
-# # @router.get('/socket.io/{userId}')
-# # async def get_connection_token(userId: str):
-# #     # Genera un token de conexión para el cliente
-# #     token = connector.get_client_access_token()
-# #     return {'url': token['url']}
+# # # @router.get('/socket.io/{userId}')
+# # # async def get_connection_token(userId: str):
+# # #     # Genera un token de conexión para el cliente
+# # #     token = connector.get_client_access_token()
+# # #     return {'url': token['url']}
 
 
 # @router.websocket('/ws/{client_id}')
