@@ -203,3 +203,36 @@ def get_patient(patient_id,db) -> PatientCard:
             img_url=row.image_url,
             status= 1)
     return patient_card
+
+def get_patient_by_family_id(family_id, db):
+    query = (select(Patient.id,
+                    User.name,
+                    User.lastname,
+                    User.cc,
+                    User.phone,
+                    User.email,
+                    User.image_url,
+                    Patient.gender,
+                    Patient.birthdate,
+                    Patient.address,
+                    Patient.description)
+            .select_from(Patient)
+            .join(User, User.id == Patient.user_id)
+            .where(Patient.familiar_user_id == family_id))
+    result = db.execute(query)
+    row = result.fetchone()
+    patient_card = PatientCard(
+            patient_id=row.id,
+            name=row.name,
+            lastname=row.lastname,
+            cc=row.cc,
+            email=row.email,
+            phone=row.phone,
+            address=row.address,
+            age = calculate_age_by_birthdate(row.birthdate),
+            gender = row.gender,
+            description=row.description,
+            img_url=row.image_url,
+            status= 1)
+    return patient_card
+
