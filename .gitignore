@@ -3,4 +3,5 @@
 *__pycache__/
 database.db
 database_i.db
-environments/
+environments
+environments/.env.production

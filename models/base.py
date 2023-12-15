@@ -64,7 +64,7 @@ class Patient(Base):
     familiar_user_id = Column(Integer, ForeignKey('users.id'))
 
     doctors = relationship('Doctor', secondary=DoctorPatients, back_populates='patients')
-    vital_signs = relationship('VitalSign', back_populates='patient', uselist=False)
+    vital_signs = relationship('VitalSigns', back_populates='patient', uselist=False)
     vital_sign_records = relationship('VitalSignRecord', back_populates='patient')
     diagnostics = relationship('Diagnostic', back_populates='patient')
 
@@ -78,7 +78,7 @@ class Doctor(Base):
     patients = relationship('Patient', secondary=DoctorPatients, back_populates='doctors')
 
 
-class VitalSign(Base):
+class VitalSigns(Base):
     __tablename__ = 'vital_signs'
     id = Column(Integer, primary_key=True, autoincrement=True)
 
