@@ -6,7 +6,7 @@ from pydantic import parse_obj_as
 from requests import Session
 from database.db import get_db
 from schemas.patient import UserRegister, PatientOut
-from services.patient import all_patients, get_patient, register_user, get_patients_by_doctor_id
+from services.patient import all_patients, get_patient, register_user, get_patients_by_doctor_id,get_patient_by_family_id
 
 
 router = APIRouter()
