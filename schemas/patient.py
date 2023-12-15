@@ -34,6 +34,9 @@ class PatientCard(BaseModel):
     lastname:str
     cc:str
     email: str
+    family_name: str
+    email_familiar: str
+    id_familiar: int
     phone:str
     address:str
     age:int

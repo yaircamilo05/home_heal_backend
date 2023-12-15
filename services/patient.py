@@ -183,18 +183,36 @@ def get_patient(patient_id,db) -> PatientCard:
                     Patient.gender,
                     Patient.birthdate,
                     Patient.address,
-                    Patient.description)
+                    Patient.description,
+                    Patient.familiar_user_id)
             .select_from(Patient)
             .join(User, User.id == Patient.user_id)
             .where(Patient.id == patient_id))
     result = db.execute(query)
     row = result.fetchone()
+    print("ROW",row)
+    print("TIPE",type(row),row[0])
+    family_query = (select(
+        User.id,
+        User.name,
+        User.email
+    )
+    .select_from(User)
+    .where(User.id == row.familiar_user_id))
+
+    family_result = db.execute(family_query)
+    family_row = family_result.fetchone()
+
+
     patient_card = PatientCard(
             patient_id=row.id,
             name=row.name,
             lastname=row.lastname,
             cc=row.cc,
             email=row.email,
+            email_familiar=family_row.email,
+            family_name=family_row.name,
+            id_familiar=family_row.id,
             phone=row.phone,
             address=row.address,
             age = calculate_age_by_birthdate(row.birthdate),

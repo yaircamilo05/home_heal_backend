@@ -28,6 +28,28 @@ def get_doctors_speciality(db, speciality: str) -> list[Doctor]:
         })
     return doctors
 
+def get_doctors_patientId(db, patient_id: int) -> list[Doctor]:
+   
+    query = text("""select D.id, U.name + ' ' + U.lastname as full_name, U.phone, U.cc, U.email 
+                    from doctors D inner join users U
+                    on D.user_id = U.id
+                    where speciality = :patient_id
+                """)
+    
+    result = db.execute(query, {'speciality': speciality})
+    rows = result.fetchall()
+    
+    doctors: list[DoctorOut] = []
+    for row in rows:
+        doctors.append({
+            "id": row.id,
+            "full_name": row.full_name,
+            "phone": row.phone,
+            "cc": row.cc,
+            "email": row.email
+        })
+    return doctors
+
 def create_doctor(doctor: DoctorCreate, db):
     doctor_user_id = create_user_doctor(doctor, db)
     if doctor_user_id:
