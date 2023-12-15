@@ -2,7 +2,7 @@ from ast import List
 from fastapi import APIRouter, Depends, status
 from database.db import get_db
 from schemas.doctor import DoctorOut, DoctorCreate
-from services.doctor import create_doctor, get_doctor_by_user_id, get_doctor_id, get_doctors_speciality
+from services.doctor import create_doctor, get_doctor_by_user_id, get_doctor_id, get_doctors_speciality, get_doctors_by_patient_id
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -27,6 +27,13 @@ async def get_doctors_by_speciality(speciality:str, db = Depends(get_db)):
     if doctors is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Doctors not found"})
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(doctors)}) 
+
+@router.get("/get_doctors_by_patient_id/{patient_id}")
+async def get_doctors_by_patient(patient_id:int, db = Depends(get_db)):
+    doctors: DoctorOut = get_doctors_by_patient_id(db, patient_id)
+    if doctors is None:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Doctors not found"})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(doctors)})
 
 @router.get("/get_doctor_by_id/{doctor_id}")
 async def get_doctor_by_id(doctor_id:int, db = Depends(get_db)):
