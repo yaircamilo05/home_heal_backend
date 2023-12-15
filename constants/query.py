@@ -33,7 +33,6 @@ MC_LINK: str = [{
         'https://www.mayoclinic.org/es-es/symptoms/hypoxemia/basics/definition/sym-20050930',
         'https://medlineplus.gov/spanish/ency/article/007198.htm',
     ]
-
 }]
 DATA: str = (
     f'''A partir del siguiente enlace con documentación médica {MC_LINK} (sólamente documéntate, no debes responder algo explícitamente de dicho documento).
