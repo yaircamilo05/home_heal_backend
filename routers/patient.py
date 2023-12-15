@@ -11,10 +11,8 @@ from services.patient import all_patients, get_patient, register_user, get_patie
 
 router = APIRouter()
 
-
 def parse_user(user: str = Body(...),):
     return parse_obj_as(UserRegister, json.loads(user))
-
 
 @router.post("/register_user",
              summary="Create a new user in the database.")
@@ -41,6 +39,13 @@ def get_patients_by_doctor(doctor_id: int, db: Session = Depends(get_db)):
     if not patients:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"data": jsonable_encoder(patients)})
     return  JSONResponse(status_code=status.HTTP_200_OK, content={"data":jsonable_encoder(patients)})
+
+@router.get("/get_patient_by_family_id/{family_id}")
+def get_patient_by_family(family_id: int, db:Session = Depends(get_db)):
+    patient = get_patient_by_family_id(family_id,db)
+    if not patient:
+        return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"data": jsonable_encoder(patient)})
+    return  JSONResponse(status_code=status.HTTP_200_OK, content={"data":jsonable_encoder(patient)})
 
 @router.get('/get_patient_by_id/{patient_id}', summary="Get a user patient by id.")
 def get_patient_by_id(patient_id: int, db: Session = Depends(get_db)):

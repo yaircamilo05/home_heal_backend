@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 class VitualSignsBase(BaseModel):
-    heart_rate: int
+    hearth_rate: int
     blood_pressure: int
     O2_saturation: int
 
